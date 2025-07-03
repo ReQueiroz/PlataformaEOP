@@ -1,0 +1,651 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title> INÍCIO | EOP </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" />
+    </noscript>
+
+    <!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+	<link rel="icon" type="images/png" sizes="32x32" href="images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+	<link rel="icon" href="image/favicon.ico">
+    
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
+
+</head>
+
+<body class="is-preload">
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header" class="alt">
+			<div style="float: left;">
+				<h1><a href="homepage.html" class="image"><img src="images/LogoComfrio.png" style="width: 100px; height: auto;"></a></h1>
+			</div>
+			<div style="margin: 0 auto; padding-left: 7em;">
+				<h1 style="color: #616163; font-size: 900;">PLATAFORMA | EXC. OPERACIONAL</h1>
+			</div>
+			<nav style="display: flex; align-items: center;">
+				<div id="sectorContainer"
+					style="display: none; position: absolute; top: 100%; left: 0; background-color: white; border-radius: 10px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);">
+					<div id="sectorInfo"></div>
+				</div>
+				<span id="loginDropdown" style="position: relative;">
+					<a href="#" onclick="toggleDropdown(event)"
+						style="background-color: white; border-radius: 10px; color: black; box-shadow: 0px 0px 5px rgba(0, 0, 0, 1)"
+						onmouseover="changeBackgroundColor(true)" onmouseout="changeBackgroundColor(false)">
+						<i class="fas fa-cog"></i></a>
+
+					<!-- Dropdown de opções -->
+					<div id="dropdownContent">
+						<a href="#" onclick="showLoadingModal()" id="sairBtn"
+							style="display: flex; align-items: center;">
+							<span style="margin-right: auto;">Sair</span>
+							<i class="fas fa-times" style="margin-left: 5px;"></i>
+						</a>
+						<!-- Outras opções de logout aqui -->
+					</div>
+				</span>
+			</nav>
+		</header>
+
+		<!-- Modal de barra de carregamento -->
+		<div id="loaderModal" class="modal">
+			<div class="modal-content">
+				<div class="loader"></div>
+				<h2 id="loadingText" style="font-size: larger; font-weight: bolder; color: white;">REDIRECIONANDO...
+				</h2>
+			</div>
+		</div>
+
+		<script>
+
+			function searchSector() {
+				var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+				var sectors = document.getElementsByClassName('major-inicio');
+
+				var matches = [];
+
+				for (var i = 0; i < sectors.length; i++) {
+					var sector = sectors[i].innerText.toLowerCase();
+					if (sector.includes(searchTerm)) {
+						matches.push(sectors[i]);
+					}
+				}
+
+				var sectorContainer = document.getElementById('sectorContainer');
+				var sectorInfo = document.getElementById('sectorInfo');
+
+				if (matches.length > 0) {
+					var dropdownContent = '<ul>';
+					for (var j = 0; j < matches.length; j++) {
+						dropdownContent += '<li><a href="#' + matches[j].innerText.replace(/\s+/g, '-') + '">' + matches[j].innerText + '</a></li>';
+					}
+					dropdownContent += '</ul>';
+					sectorInfo.innerHTML = dropdownContent;
+					sectorContainer.style.display = 'block';
+				} else {
+					sectorContainer.style.display = 'none';
+				}
+			}
+			function changeBackgroundColor(isHover) {
+				var loginLink = document.getElementById("loginDropdown").querySelector("a");
+				if (isHover) {
+					loginLink.style.backgroundColor = "#616163";
+					loginLink.style.color = "white";
+				} else {
+					loginLink.style.backgroundColor = "white";
+					loginLink.style.color = "black";
+				}
+			}
+
+			function toggleDropdown(event) {
+				event.preventDefault();
+				var dropdown = document.getElementById("dropdownContent");
+				if (dropdown.style.display === "none" || dropdown.style.display === "") {
+					dropdown.style.display = "block";
+				} else {
+					dropdown.style.display = "none";
+				}
+
+				if (event.target.textContent === "Sair") {
+					document.getElementById("logoutModal").style.display = "block";
+					// Simule um atraso para a barra de carregamento
+					setTimeout(function () {
+						// Aqui você pode redirecionar o usuário para a página de login ou executar outras ações de logout
+						// window.location.href = "pagina_de_login.html";
+						// Por enquanto, vamos apenas esconder o modal
+						document.getElementById("logoutModal").style.display = "none";
+						dropdown.style.display = "none"; // Esconder o menu após o logout
+					}, 2000); // Tempo simulado de 2 segundos
+				}
+			}
+
+			var isExpanded = false;
+			var collapseTimeout;
+
+			function expandSearch() {
+				var input = document.getElementById('searchInput');
+				input.style.width = 'calc(100% - 30px)'; // Largura expandida
+				input.value = 'Pesquisar por tema'; // Define o valor do campo de entrada
+				isExpanded = true;
+			}
+
+			function collapseSearch() {
+				var input = document.getElementById('searchInput');
+				if (input.value === '' || input.value === 'Pesquisar por tema') {
+					input.style.width = '0'; // Redefine a largura para zero para recolher completamente
+					input.value = ''; // Limpa o valor do campo de entrada
+					isExpanded = false;
+					clearSectorInfo(); // Limpa o nome do setor abaixo do input
+				}
+			}
+
+			function delayCollapseSearch(event) {
+				if (!event.relatedTarget || !event.currentTarget.contains(event.relatedTarget)) {
+					collapseTimeout = setTimeout(collapseSearch, 800); // Atraso de 2 segundos (2000 milissegundos) antes de recolher o elemento
+				}
+			}
+
+			function cancelCollapseDelay() {
+				clearTimeout(collapseTimeout);
+			}
+
+			function clearPlaceholder() {
+				var input = document.getElementById('searchInput');
+				if (input.value == 'Pesquisar por tema') {
+					input.value = '';
+				}
+			}
+
+			function restorePlaceholder() {
+				var input = document.getElementById('searchInput');
+				if (input.value == '') {
+					input.value = 'Pesquisar por tema';
+				}
+			}
+
+			// Esta função será chamada quando o valor do input mudar
+			function checkInput() {
+				var inputValue = document.getElementById('searchInput').value.toLowerCase(); // Obtém o valor do input e converte para minúsculas
+
+				// Seleciona todos os elementos h3 com a classe "major-inicio"
+				var h3Elements = document.querySelectorAll('h3.major-inicio');
+
+				// Itera sobre os elementos h3
+				for (var i = 0; i < h3Elements.length; i++) {
+					var h3Text = h3Elements[i].textContent.toLowerCase(); // Obtém o texto dentro do h3 e converte para minúsculas
+
+					// Verifica se o valor do input está contido no texto do h3
+					if (h3Text.includes(inputValue)) {
+						// Se encontrar correspondência, mostra o nome do setor abaixo do input
+						var sectorName = h3Elements[i].textContent;
+						var sectorHref = h3Elements[i].parentElement.querySelector('a').getAttribute('href');
+						showSectorInfo(sectorName, sectorHref);
+						return; // Termina a execução, pois já encontramos uma correspondência
+					}
+				}
+
+				// Se não encontrar correspondência, limpa o nome do setor abaixo do input
+				clearSectorInfo();
+			}
+
+			// Esta função mostra o nome do setor abaixo do input
+			function showSectorInfo(sectorName, sectorHref) {
+				var sectorInfoContainer = document.getElementById('sectorInfo');
+
+				// Encontrar todos os elementos com a classe "major-inicio"
+				var majorInicioElements = document.querySelectorAll('.major-inicio');
+
+				// Limpar o conteúdo anterior
+				sectorInfoContainer.innerHTML = '';
+
+				// Iterar sobre os elementos e encontrar os que correspondem ao setor
+				for (var i = 0; i < majorInicioElements.length; i++) {
+					if (majorInicioElements[i].textContent === sectorName) {
+						// Encontrou o elemento correspondente, agora extrair a URL da imagem
+						var imageUrl = majorInicioElements[i].parentNode.querySelector('.image img').src;
+
+						// Criar elementos para exibir a imagem e o texto do setor
+						var sectorLink = document.createElement('a');
+						sectorLink.href = sectorHref;
+
+						var imageElement = document.createElement('img');
+						imageElement.src = imageUrl;
+						imageElement.alt = sectorName;
+
+						var h3Element = document.createElement('h3');
+						h3Element.textContent = sectorName;
+
+						// Adicionar elementos ao container sectorInfo
+						sectorLink.appendChild(imageElement);
+						sectorLink.appendChild(h3Element);
+						sectorInfoContainer.appendChild(sectorLink);
+
+						// Exibir o container
+						sectorInfoContainer.style.display = 'block';
+
+						return; // Termina a execução após encontrar o elemento correspondente
+					}
+				}
+
+				// Se não encontrar correspondência, limpa o nome do setor abaixo do input
+				clearSectorInfo();
+			}
+
+
+
+
+
+
+
+			// Esta função limpa o nome do setor abaixo do input
+			function clearSectorInfo() {
+				var sectorInfoContainer = document.getElementById('sectorInfo');
+				sectorInfoContainer.innerHTML = ''; // Limpa o conteúdo do container
+				sectorInfoContainer.style.display = 'none'; // Oculta o container
+			}
+
+			window.onload = function () {
+				var input = document.getElementById('searchInput');
+				var sectorInfoContainer = document.getElementById('sectorInfo');
+
+				// Define a largura inicial do input como zero
+				input.style.width = '0';
+
+				input.addEventListener('input', function () {
+					var inputValue = input.value.toLowerCase();
+					var h3Elements = document.querySelectorAll('h3.major-inicio');
+
+					var matchingSectors = [];
+
+					for (var i = 0; i < h3Elements.length; i++) {
+						var h3Text = h3Elements[i].textContent.toLowerCase();
+						if (h3Text.includes(inputValue)) {
+							matchingSectors.push(h3Elements[i].textContent); // Adiciona apenas o texto do h3
+						}
+					}
+
+					// Limpa o container antes de adicionar novos resultados
+					sectorInfoContainer.innerHTML = '';
+
+					// Adiciona os resultados ao container
+					if (matchingSectors.length > 0) {
+						for (var j = 0; j < matchingSectors.length; j++) {
+							var a = document.createElement('a');
+							a.textContent = matchingSectors[j];
+							a.href = h3Elements[j].parentElement.querySelector('a').getAttribute('href');
+
+							var p = document.createElement('p'); // Cria um novo parágrafo para cada link
+							p.style.marginBottom = '0'; // Define a margem inferior como zero para remover a distância entre cada h3
+							p.appendChild(a); // Adiciona o link ao parágrafo
+							sectorInfoContainer.appendChild(p); // Adiciona o parágrafo ao contêiner
+						}
+						sectorInfoContainer.style.display = 'block'; // Exibe o container
+					} else {
+						sectorInfoContainer.style.display = 'none'; // Oculta o container se não houver correspondência
+					}
+				});
+			};
+
+
+		</script>
+
+		<style>
+			.search-input {
+				width: 0;
+				/* Largura inicialmente zero para estar completamente recolhido */
+				transition: width 0.3s ease;
+				/* Adicionando transição para suavizar a animação */
+				overflow: hidden;
+				/* Esconder qualquer conteúdo que possa estar fora do campo de entrada */
+				float: right;
+				/* Colocar o campo de entrada à direita */
+			}
+
+			.expanded {
+				width: calc(100% - 30px);
+				/* Largura expandida */
+			}
+
+			#searchIcon {
+				cursor: pointer;
+				/* Altera o cursor para ponteiro */
+			}
+
+			#sectorInfo {
+				position: relative;
+				/* Para que o h3 possa ser posicionado em relação a este contêiner */
+				display: inline-block;
+				/* Para que ele não ocupe toda a largura */
+			}
+
+			#sectorInfo h3 {
+				display: none;
+				/* Comece escondido */
+				position: absolute;
+				/* Posicionado absolutamente em relação ao contêiner pai */
+				width: calc(100% - 30px);
+				/* Ocupa toda a largura do contêiner, respeitando o ícone de pesquisa */
+				background-color: white;
+				/* Cor de fundo branca */
+				border-radius: 10px;
+				/* Cantos arredondados */
+				box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+				/* Sombra */
+				color: black;
+				/* Cor do texto */
+				padding: 10px;
+				/* Espaçamento interno */
+				top: calc(100% + 5px);
+				/* Alinhado abaixo do contêiner pai com um pequeno espaço */
+				left: 0;
+				/* Alinhado à esquerda do contêiner pai */
+				z-index: 1;
+				/* Colocado acima de outros conteúdos */
+				margin-top: 0;
+				/* Adicionando margem superior zero */
+			}
+
+			#sectorInfo h3:hover {
+				background-color: #616163;
+				/* Altera a cor de fundo ao passar o mouse */
+			}
+
+			#sectorInfo:hover h3 {
+				display: block;
+			}
+
+			#sectorInfo:hover {
+				background-color: #616163;
+				/* Altera o background quando o mouse passa sobre o contêiner pai */
+				border-radius: 10px;
+			}
+		</style>
+
+<section id="one" class="wrapper spotlight style1" style="padding: 2.5em; padding-top: 5%; position: relative; display: flex; flex-direction: column; flex-wrap: wrap; background-size: cover; background-position: left center; background-repeat: no-repeat; background-image: url(images/fundo.png);">
+
+	<div style="width: 100%; text-align: left;">
+		<h3 style="color: #616163; margin: 0; margin-left: 10px; padding: 0;">NAVEGUE PELOS TEMAS</h2>
+	</div>
+
+	<!-- Primeira linha com 2 cards -->
+	<div style="display: flex; flex-wrap: wrap; justify-content: flex-start;">
+		<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+			<a href="Corporativo.html" class="image" style="margin: 2%;"><img src="images/a3.png"></a>
+			<div class="content" align="center" style="padding: 5%;">
+				<h3 class="major-inicio" style="font-size: 0.8em;">LISTA MESTRA</h3>
+				<a href="Corporativo.html" class="special">ACESSAR</a>
+			</div>
+		</div>
+
+		<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+			<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/bsc.png"></a>
+			<div class="content" align="center" style="padding: 5%">
+				<h3 class="major-inicio" style="font-size: 0.8em;">ÁREAS</h3>
+				<a href="Operações.html" class="special" title="Acessar Armazém">ACESSAR</a>
+			</div>
+		</div>
+	</div>
+  <!-- Linha horizontal de separação -->
+  <hr style="width: 100%; border: none; border-top: 2px solid #616163; margin: 0.5em 0;">
+	<!-- Linha 1: 3 cards -->
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-start;">
+	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+		<a href="Corporativo.html" class="image" style="margin: 2%;"><img src="images/inbound.png"></a>
+		<div class="content" align="center" style="padding: 5%;">
+			<h3 class="major-inicio" style="font-size: 0.8em;">INBOUND</h3>
+			<a href="Corporativo.html" class="special">ACESSAR</a>
+		</div>
+	</div>
+
+	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+		<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/outbound.png"></a>
+		<div class="content" align="center" style="padding: 5%;">
+			<h3 class="major-inicio" style="font-size: 0.8em;">OUTBOUND</h3>
+			<a href="Operações.html" class="special">ACESSAR</a>
+		</div>
+	</div>
+
+	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+		<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/admop.png"></a>
+		<div class="content" align="center" style="padding: 5%;">
+			<h3 class="major-inicio" style="font-size: 0.8em;">ADM. OP.</h3>
+			<a href="Operações.html" class="special">ACESSAR</a>
+		</div>
+	</div>
+</div>
+
+<!-- Linha 2: 2 cards -->
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-start; padding: 0; padding-top: 0">
+	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; padding-top: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+		<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/local.png"></a>
+		<div class="content" align="center" style="padding: 5%;">
+			<h3 class="major-inicio" style="font-size: 0.8em;">EOP. LOCAL</h3>
+			<a href="Operações.html" class="special">ACESSAR</a>
+		</div>
+	</div>
+
+	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; padding-top: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+		<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/rh.png"></a>
+		<div class="content" align="center" style="padding: 5%;">
+			<h3 class="major-inicio" style="font-size: 0.8em;">EOP. CORP.</h3>
+			<a href="Operações.html" class="special">ACESSAR</a>
+		</div>
+	</div>
+</div>
+</section>
+
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// Inicializa o slick apenas se a seção estiver visível
+			if ($('#four').is(':visible')) {
+				$('.features').slick({
+					dots: true,
+					infinite: true,
+					speed: 1500,
+					autoplay: true,
+					autoplaySpeed: 0,
+					slidesToShow: 4.66, // Ajustado para exibir um número inteiro de slides
+					slidesToScroll: 1,
+					prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+					nextArrow: '<button type="button" class="slick-next">Next</button>',
+					responsive: [
+						{
+							breakpoint: 1024,
+							settings: {
+								slidesToShow: 3,
+								slidesToScroll: 3
+							}
+						},
+						{
+							breakpoint: 600,
+							settings: {
+								slidesToShow: 1,
+								slidesToScroll: 1
+							}
+						}
+					]
+				});
+			}
+		});
+
+		function expandInner(element) {
+			element.style.transition = "width 0.5s ease";
+			element.style.width = "100%";
+
+			// Define a opacidade dos outros elementos .inner para 0.5
+			var siblingElements = getSiblings(element);
+			for (var i = 0; i < siblingElements.length; i++) {
+				siblingElements[i].style.opacity = '0.4';
+			}
+		}
+
+		function collapseInner(element) {
+			element.style.transition = "width 0.5s ease";
+			element.style.width = ""; // Reseta a largura para o valor padrão
+
+			// Define a opacidade dos outros elementos .inner de volta para 1
+			var siblingElements = getSiblings(element);
+			for (var i = 0; i < siblingElements.length; i++) {
+				siblingElements[i].style.opacity = '1';
+			}
+		}
+
+
+		function showLoadingModal() {
+			// Exibe o modal de barra de carregamento
+			document.getElementById("loaderModal").style.display = "block";
+
+			// Armazena a posição atual da barra de rolagem
+			var scrollPosition = window.scrollY;
+
+			// Define um atraso para o redirecionamento (2 segundos neste exemplo)
+			setTimeout(function () {
+				// Redireciona para a página index
+				window.location.href = "index.html";
+
+				// Restaura a posição da barra de rolagem após o redirecionamento
+				window.scrollTo(0, scrollPosition);
+			}, 2000); // Ajuste este valor conforme necessário
+
+			// Evita o comportamento padrão do link (redirecionamento imediato)
+			event.preventDefault();
+		}
+
+	</script>
+
+
+
+	<a href="#top">
+		<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 25 20" data-name="Layer 1">
+			<path
+				d="M17.71,11.29l-5-5a1,1,0,0,0-.33-.21,1,1,0,0,0-.76,0,1,1,0,0,0-.33.21l-5,5a1,1,0,0,0,1.42,1.42L11,9.41V17a1,1,0,0,0,2,0V9.41l3.29,3.3a1,1,0,0,0,1.42,0A1,1,0,0,0,17.71,11.29Z" />
+		</svg>
+	</a>
+
+	<style>
+		.hidden {
+			display: none;
+		}
+
+		/* Ajusta o tamanho do ícone dentro dos botões slick-prev e slick-next */
+		.slick-prev:before,
+		.slick-next:before {
+			font-size: 35px;
+			/* Define o tamanho do ícone */
+		}
+
+
+		#four .inner {
+			margin: 0 auto;
+			text-align: center;
+			/* Alinha o texto ao centro */
+			transform: scale(0.8);
+		}
+
+		.actions {
+			margin-top: 20px;
+			/* Espaçamento superior */
+			text-align: center;
+			/* Alinha ao centro */
+		}
+
+		.image img {
+			transition: transform 0.3s ease-out;
+			/* ou ease-in ou linear */
+		}
+
+		.image img:hover {
+			transform: scale(0.98);
+		}
+
+		.wrapper.spotlight.style1 {
+			display: flex;
+			justify-content: space-around;
+			/* Ou outro valor de alinhamento, como space-between */
+		}
+
+		/* Estilos para o modal */
+		/* Modal invisível inicialmente */
+.modal {
+    display: none; /* Inicialmente invisível */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px); /* Efeito de fundo borrado */
+    justify-content: center;
+    align-items: center; /* Centraliza o conteúdo */
+}
+
+/* Conteúdo do modal loader */
+.modal-content {
+    background-color: transparent;
+    padding: 20px;
+    width: 80%;
+    text-align: center;
+    border-radius: 10px;
+}
+
+/* Estilos para o loader */
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #616163; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 1.5s linear infinite;
+    margin: auto;
+}
+
+/* Animação para girar o loader */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+body {
+  overflow: hidden;
+  height: 100vh;
+}
+	</style>
+
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+<script src="auth.js"></script>
+<script>
+  checkAuth();
+</script>
+</body>
+
+</html>

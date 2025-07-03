@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<!--
+    Solid State by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>PLATAFORMA | EOP</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" />
+    </noscript>
+
+    <!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+	<link rel="icon" type="images/png" sizes="32x32" href="images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+	<link rel="icon" href="image/favicon.ico">
+    
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
+</head>
+
+<body class="is-preload">
+
+	<!-- Banner -->
+<section id="banner-home">
+	<img src="images/projetosa3.jpg" alt="Fundo" class="bg-image" />
+	<div class="inner">
+		<h3>PLATAFORMA</h3>
+		<h2 style="align-self: left;">EXC. OPERACIONAL</h2>		
+	</div>
+	<form id="login-form" method="post" action="#">
+		<div class="row gtr-uniform">
+			<div class="col-6 col-12-xsmall" style="padding: 0 0 0 8.2em; width: 31.5%;">
+				<label for="demo-email">E-mail</label>
+				<input type="email" name="demo-email" id="demo-email" value="" />
+			</div>
+		</div>
+		<div class="row gtr-uniform" style="margin-top: 1em;">
+			<div class="col-6 col-12-xsmall" style="padding: 0 0 0 8.2em; width: 31.5%;">
+				<label for="demo-name">Senha</label>
+				<div style="position: relative;">
+					<input type="password" name="demo-password" id="demo-password" value="" style="padding-right: 2.5em;" />
+					<span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+						🔒
+					</span>
+				</div>
+				<div style="text-align: left; margin-top: 0.5em;">
+					<a href="#" id="esqueci-senha" style="font-size: 0.9em; color: #fff; cursor: pointer;">Esqueci minha senha?</a>
+				  </div>
+			</div>
+		</div>
+	</form>
+	<div class="inner">
+		<button id="entrar-loader-button" class="button-home">Entrar</button>
+	</div>
+
+	<!-- Logo fora da inner -->
+	<img src="images/LogoComfrio.png" alt="Logo" class="logo-bottom-left">
+</section>
+	<!-- Modal -->
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<p style="font-size: 1.5em;"><strong style="color: #616163;">ATENÇÃO</strong></p>
+			<p style="font-size: 1.2em; margin-top: -2em;">Usuário ou senha inválidos.</p>
+			<p style="font-size: 1.2em; margin-top: -2em;">Verifique e tente novamente.</p>
+		</div>
+	</div>
+
+	<!-- Modal Loader para entrada -->
+	<div id="myModalLoaderEntrar" class="modal">
+		<div class="modal-content">
+			<div class="loader"></div>
+			<h2 id="loadingText">REDIRECIONANDO...</h2>
+		</div>
+	</div>
+
+<!-- Modal de Redefinição de Senha -->
+<div id="modalEsqueciSenha" class="modal">
+	<div class="modal-content">
+	  <span class="close" id="closeEsqueciSenha">&times;</span>
+	  <h3 style="color: #666;">Redefinir Senha</h3>
+	  <p>Informe seu e-mail cadastrado para receber um link de redefinição de senha.</p>
+	  <input type="email" id="emailRedefinir" placeholder="Seu e-mail" style="color: #666; background-color: #ecebeb; width: 100%; padding: 0.5em;">
+	  <button id="btnEnviarReset" class="button-home" style="margin-top: 1.5em; margin-bottom: 0;">Enviar E-mail</button>
+	  <p id="mensagemReset" style="margin-top: 1em;"></p>
+	</div>
+  </div>
+
+
+
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<a href="#top">
+		<svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 25 20" data-name="Layer 1">
+			<path
+				d="M17.71,11.29l-5-5a1,1,0,0,0-.33-.21,1,1,0,0,0-.76,0,1,1,0,0,0-.33.21l-5,5a1,1,0,0,0,1.42,1.42L11,9.41V17a1,1,0,0,0,2,0V9.41l3.29,3.3a1,1,0,0,0,1.42,0A1,1,0,0,0,17.71,11.29Z" />
+		</svg>
+	</a>
+
+	<style>
+		.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 2em;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+.button-home {
+	padding: 0.5em;
+	margin: 0.5em;
+	appearance: none;
+	transition: background-color 0.2s ease-in-out;
+	border-radius: 12px;
+	border: 0;
+	box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.125);
+	color: white;
+	cursor: pointer;
+	display: inline-block;
+	font-family: Raleway, Helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: 700;
+	height: 3.75em;
+	letter-spacing: 0.1em;
+	line-height: 3.75em;
+	padding: 0 5em;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	white-space: nowrap;
+	background-color: #666; /* Azul padrão */
+}
+
+.button-home:hover {
+	background-color: #3c3c3b; /* Vermelho no hover */
+}
+
+	</style>
+
+<script>
+	$('#togglePassword').click(function () {
+	  const input = $('#demo-password');
+	  const isPassword = input.attr('type') === 'password';
+	  input.attr('type', isPassword ? 'text' : 'password');
+	  $(this).text(isPassword ? '🔓' : '🔒');
+	});
+  </script>
+
+
+	<!-- Firebase compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+
+<script>
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyBlY1s_OQKLGFJaZSyDJzKIoX3WnFGSq58",
+    authDomain: "intranetcomfrio.firebaseapp.com",
+    projectId: "intranetcomfrio",
+    storageBucket: "intranetcomfrio.appspot.com",
+    messagingSenderId: "347790318348",
+    appId: "1:347790318348:web:901f10beadae6981e40729"
+  };
+
+  // Inicializa o Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<script>
+  // Ação ao clicar no botão "Entrar"
+  $('#entrar-loader-button').click(function () {
+    const email = $('#demo-email').val();
+    const senha = $('#demo-password').val();
+
+    if (!email || !senha) {
+      $('#myModal').addClass('active');
+      return;
+    }
+
+    openEntrarLoaderModal();
+
+    firebase.auth().signInWithEmailAndPassword(email, senha)
+      .then(function (userCredential) {
+        // Usuário autenticado
+        setTimeout(function () {
+          window.location.href = 'homepage.html';
+        }, 2000);
+      })
+      .catch(function (error) {
+        console.error('Erro ao autenticar:', error);
+        closeEntrarLoaderModal();
+        $('#myModal').addClass('active');
+      });
+  });
+
+  // Modal de erro (usuário/senha incorretos)
+  $('.close').click(function () {
+    $('#myModal').removeClass('active');
+  });
+
+  $(window).click(function (e) {
+    if ($(e.target).hasClass('modal')) {
+      $('#myModal').removeClass('active');
+    }
+  });
+
+  // Funções de modais
+  function openEntrarLoaderModal() {
+    $('#myModalLoaderEntrar').css('display', 'flex');
+  }
+
+  function closeEntrarLoaderModal() {
+    $('#myModalLoaderEntrar').css('display', 'none');
+  }
+
+  $(window).click(function (e) {
+    if (e.target.id === 'myModalLoaderEntrar') {
+      closeEntrarLoaderModal();
+    }
+  });
+</script>
+<script>
+	$(document).ready(function () {
+	  // Abrir o modal e preencher o e-mail automaticamente
+	  $('#esqueci-senha').click(function () {
+		$('#emailRedefinir').val($('#demo-email').val()); // Preenche o campo do modal com o e-mail já digitado
+		$('#mensagemReset').text('');
+		$('#modalEsqueciSenha').css('display', 'flex');
+	  });
+  
+	  // Fechar o modal ao clicar no X
+	  $('#closeEsqueciSenha').click(function () {
+		$('#modalEsqueciSenha').hide();
+	  });
+  
+	  // Fechar o modal ao clicar fora do conteúdo
+	  $(window).click(function (e) {
+		if (e.target.id === 'modalEsqueciSenha') {
+		  $('#modalEsqueciSenha').hide();
+		}
+	  });
+  
+	  // Enviar o e-mail de redefinição de senha
+	  $('#btnEnviarReset').click(function () {
+		const email = $('#emailRedefinir').val();
+  
+		if (!email) {
+		  $('#mensagemReset').css('color', 'red').text('Por favor, digite seu e-mail.');
+		  return;
+		}
+  
+		firebase.auth().sendPasswordResetEmail(email)
+		  .then(() => {
+			$('#mensagemReset').css('color', 'green').text('E-mail enviado com sucesso! Verifique sua caixa de entrada.');
+		  })
+		  .catch((error) => {
+			console.error('Erro ao enviar e-mail de redefinição:', error);
+			$('#mensagemReset').css('color', 'red').text('Erro ao enviar. Verifique o e-mail digitado.');
+		  });
+	  });
+	});
+  </script>
+  
+  
+</body>
+
+</html>
