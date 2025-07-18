@@ -20,7 +20,6 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
 </head>
-
 <body class="is-preload">
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
@@ -105,7 +104,6 @@
 				} else {
 					dropdown.style.display = "none";
 				}
-
 				if (event.target.textContent === "Sair") {
 					document.getElementById("logoutModal").style.display = "block";
 					// Simule um atraso para a barra de carregamento
@@ -180,36 +178,27 @@
   const form = document.getElementById("formAdicionarDocumento");
   const statusMessage = document.getElementById("statusMessage");
   const arquivoInput = document.getElementById("arquivoInput");
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const titulo = document.getElementById("tituloInput").value.trim();
     const autor = document.getElementById("autorInput").value.trim();
     const data_criacao = document.getElementById("dataInput").value;
-
     if (!arquivoInput.files.length) {
       statusMessage.style.color = "red";
       statusMessage.textContent = "Por favor, selecione um arquivo.";
       return;
     }
-
     const arquivo = arquivoInput.files[0];
-
     try {
       statusMessage.style.color = "black";
       statusMessage.textContent = "Fazendo upload do arquivo...";
-
       // Referência ao Firebase Storage na pasta documentos
       const storageRef = firebase.storage().ref();
       const arquivoRef = storageRef.child('documentos/' + Date.now() + '_' + arquivo.name);
-
       // Upload do arquivo
       const snapshot = await arquivoRef.put(arquivo);
-
       // Pega a URL pública do arquivo
       const urlArquivo = await snapshot.ref.getDownloadURL();
-
       // Salva no Firestore com a URL do arquivo
       await db.collection("documentos").add({
         titulo,
@@ -217,80 +206,95 @@
         data_criacao,
         conteudo: urlArquivo
       });
-
       statusMessage.style.color = "green";
       statusMessage.textContent = "Documento adicionado com sucesso!";
       form.reset();
       carregarTabela(); // Atualiza tabela
-
     } catch (error) {
       console.error("Erro ao adicionar documento:", error);
       statusMessage.style.color = "red";
       statusMessage.textContent = "Erro ao adicionar documento. Veja o console.";
     }
   });
+	const tiposPermitidos = ["application/pdf", "application/msword", 
+	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	"application/vnd.ms-excel",
+	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
+	if (!tiposPermitidos.includes(arquivo.type)) {
+	statusMessage.style.color = "red";
+	statusMessage.textContent = "Tipo de arquivo inválido. Use PDF, Word ou Excel.";
+	return;
+	}
 // Função para carregar e popular a tabela, com botão de excluir
 async function carregarTabela() {
   const tbody = document.getElementById("projectsTableBody");
   tbody.innerHTML = ""; // limpa tabela
-
   try {
     const querySnapshot = await db.collection("documentos").get();
-
     querySnapshot.forEach(doc => {
       const data = doc.data();
       const docId = doc.id;
-
       const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${data.titulo || ""}</td>
-        <td>${data.autor || ""}</td>
-        <td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
-        <td>${data.data_criacao || ""}</td>
-        <td>
-          <button data-id="${docId}" class="btnExcluir" style="background-color:#c0392b; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
-            Excluir
-          </button>
-        </td>
-      `;
+		tr.innerHTML = `
+		<td>${data.titulo || ""}</td>
+		<td>${data.autor || ""}</td>
+		<td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
+		<td>${data.data_criacao || ""}</td>
+		<td>
+			<button data-id="${docId}" class="btnEditar" style="background-color:#2980b9; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; margin-right: 5px;">
+			Editar
+			</button>
+			<button data-id="${docId}" class="btnExcluir" style="background-color:#c0392b; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
+			Excluir
+			</button>
+		</td>
+		`;
       tbody.appendChild(tr);
     });
-
+	const botoesEditar = document.querySelectorAll(".btnEditar");
+	botoesEditar.forEach(botao => {
+	botao.addEventListener("click", async (e) => {
+		const id = e.target.getAttribute("data-id");
+		const doc = await db.collection("documentos").doc(id).get();
+		if (doc.exists) {
+		const data = doc.data();
+		document.getElementById("tituloInput").value = data.titulo || "";
+		document.getElementById("autorInput").value = data.autor || "";
+		document.getElementById("dataInput").value = data.data_criacao || "";
+		// Marcar ID para atualização
+		form.setAttribute("data-editar-id", id);
+		statusMessage.style.color = "blue";
+		statusMessage.textContent = "Modo de edição ativado. Após alterar os campos, clique em 'Adicionar Documento'.";
+		}
+	});
+	});
     // Depois de inserir as linhas, adiciona os event listeners aos botões excluir
     const botoesExcluir = document.querySelectorAll(".btnExcluir");
-
     botoesExcluir.forEach(botao => {
       botao.addEventListener("click", async (e) => {
         const id = e.target.getAttribute("data-id");
-
         if (confirm("Tem certeza que quer excluir este documento?")) {
           try {
             // 1. Busca o documento no Firestore
             const docRef = db.collection("documentos").doc(id);
             const doc = await docRef.get();
-
             if (!doc.exists) {
               alert("Documento não encontrado.");
               return;
             }
-
             const data = doc.data();
             const urlArquivo = data.conteudo;
-
             // 2. Exclui o arquivo do Firebase Storage, se existir
             if (urlArquivo) {
               const storageRef = firebase.storage().refFromURL(urlArquivo);
               await storageRef.delete();
               console.log("Arquivo excluído do Storage.");
             }
-
             // 3. Exclui o documento do Firestore
             await docRef.delete();
             alert("Documento e arquivo excluídos com sucesso!");
-
             // 4. Atualiza a tabela
             carregarTabela();
-
           } catch (error) {
             console.error("Erro ao excluir:", error);
             alert("Erro ao excluir o documento ou o arquivo. Veja o console.");
@@ -298,13 +302,11 @@ async function carregarTabela() {
         }
       });
     });
-
   } catch (error) {
     console.error("Erro ao buscar documentos:", error);
     tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Erro ao carregar documentos</td></tr>`;
   }
 }
-
 // Chama a função ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarTabela);
 </script>
@@ -343,6 +345,7 @@ document.addEventListener("DOMContentLoaded", carregarTabela);
 							</script>
 						</tbody>
 					</table>
+					<div id="paginacao" style="margin-top: 1em; text-align: center;"></div>
 					<ul class="actions">
 						<a href="homepage.html" class="special" style="margin: 0;">VOLTAR</a>
 					</ul>
@@ -383,12 +386,10 @@ document.addEventListener("DOMContentLoaded", carregarTabela);
 	});
 	</script>
 	<script>
-
 // Eventos
 for (const key in filters) {
     filters[key].addEventListener('change', aplicarFiltros);
 }
-
 // Inicialização
 window.addEventListener('DOMContentLoaded', () => {
     aplicarFiltros();
