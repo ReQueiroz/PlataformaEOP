@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html>
-
 <head>
     <title>@ PROJETOS A3 | MELHORIA CONTÍNUA </title>
     <meta charset="utf-8" />
@@ -9,7 +8,6 @@
     <noscript>
         <link rel="stylesheet" href="assets/css/noscript.css" />
     </noscript>
-
     <!-- Favicon -->
 	<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 	<link rel="icon" type="images/png" sizes="32x32" href="images/favicon-32x32.png">
@@ -21,14 +19,11 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
-
 </head>
 
 <body class="is-preload">
-
 	<!-- Page Wrapper -->
 	<div id="page-wrapper">
-
 		<!-- Header -->
 		<header id="header" class="alt">
 			<div style="float: left;">
@@ -47,7 +42,6 @@
 						style="background-color: white; border-radius: 10px; color: black; box-shadow: 0px 0px 5px rgba(0, 0, 0, 1)"
 						onmouseover="changeBackgroundColor(true)" onmouseout="changeBackgroundColor(false)">
 						<i class="fas fa-cog"></i></a>
-
 					<!-- Dropdown de opções -->
 					<div id="dropdownContent">
 						<a href="#" onclick="showLoadingModal()" id="sairBtn"
@@ -58,10 +52,8 @@
 						<!-- Outras opções de logout aqui -->
 					</div>
 				</span>
-				<a href="#menu" style="box-shadow: 0px 0px 5px rgba(0, 0, 0, 1); margin-left: 10px;">Menu | </a>
 			</nav>
 		</header>
-
 		<!-- Modal de barra de carregamento -->
 		<div id="loaderModal" class="modal">
 			<div class="modal-content">
@@ -71,23 +63,18 @@
 			</div>
 		</div>
 		<script>
-
 			function searchSector() {
 				var searchTerm = document.getElementById('searchInput').value.toLowerCase();
 				var sectors = document.getElementsByClassName('major-inicio');
-
 				var matches = [];
-
 				for (var i = 0; i < sectors.length; i++) {
 					var sector = sectors[i].innerText.toLowerCase();
 					if (sector.includes(searchTerm)) {
 						matches.push(sectors[i]);
 					}
 				}
-
 				var sectorContainer = document.getElementById('sectorContainer');
 				var sectorInfo = document.getElementById('sectorInfo');
-
 				if (matches.length > 0) {
 					var dropdownContent = '<ul>';
 					for (var j = 0; j < matches.length; j++) {
@@ -110,7 +97,6 @@
 					loginLink.style.color = "black";
 				}
 			}
-
 			function toggleDropdown(event) {
 				event.preventDefault();
 				var dropdown = document.getElementById("dropdownContent");
@@ -132,272 +118,9 @@
 					}, 2000); // Tempo simulado de 2 segundos
 				}
 			}
-
 			var isExpanded = false;
 			var collapseTimeout;
-
-			function expandSearch() {
-				var input = document.getElementById('searchInput');
-				input.style.width = 'calc(100% - 30px)'; // Largura expandida
-				input.value = 'Pesquisar por tema'; // Define o valor do campo de entrada
-				isExpanded = true;
-			}
-
-			function collapseSearch() {
-				var input = document.getElementById('searchInput');
-				if (input.value === '' || input.value === 'Pesquisar por tema') {
-					input.style.width = '0'; // Redefine a largura para zero para recolher completamente
-					input.value = ''; // Limpa o valor do campo de entrada
-					isExpanded = false;
-					clearSectorInfo(); // Limpa o nome do setor abaixo do input
-				}
-			}
-
-			function delayCollapseSearch(event) {
-				if (!event.relatedTarget || !event.currentTarget.contains(event.relatedTarget)) {
-					collapseTimeout = setTimeout(collapseSearch, 800); // Atraso de 2 segundos (2000 milissegundos) antes de recolher o elemento
-				}
-			}
-
-			function cancelCollapseDelay() {
-				clearTimeout(collapseTimeout);
-			}
-
-			function clearPlaceholder() {
-				var input = document.getElementById('searchInput');
-				if (input.value == 'Pesquisar por tema') {
-					input.value = '';
-				}
-			}
-
-			function restorePlaceholder() {
-				var input = document.getElementById('searchInput');
-				if (input.value == '') {
-					input.value = 'Pesquisar por tema';
-				}
-			}
-
-			// Esta função será chamada quando o valor do input mudar
-			function checkInput() {
-				var inputValue = document.getElementById('searchInput').value.toLowerCase(); // Obtém o valor do input e converte para minúsculas
-
-				// Seleciona todos os elementos h3 com a classe "major-inicio"
-				var h3Elements = document.querySelectorAll('h3.major-inicio');
-
-				// Itera sobre os elementos h3
-				for (var i = 0; i < h3Elements.length; i++) {
-					var h3Text = h3Elements[i].textContent.toLowerCase(); // Obtém o texto dentro do h3 e converte para minúsculas
-
-					// Verifica se o valor do input está contido no texto do h3
-					if (h3Text.includes(inputValue)) {
-						// Se encontrar correspondência, mostra o nome do setor abaixo do input
-						var sectorName = h3Elements[i].textContent;
-						var sectorHref = h3Elements[i].parentElement.querySelector('a').getAttribute('href');
-						showSectorInfo(sectorName, sectorHref);
-						return; // Termina a execução, pois já encontramos uma correspondência
-					}
-				}
-
-				// Se não encontrar correspondência, limpa o nome do setor abaixo do input
-				clearSectorInfo();
-			}
-
-			// Esta função mostra o nome do setor abaixo do input
-			function showSectorInfo(sectorName, sectorHref) {
-				var sectorInfoContainer = document.getElementById('sectorInfo');
-
-				// Encontrar todos os elementos com a classe "major-inicio"
-				var majorInicioElements = document.querySelectorAll('.major-inicio');
-
-				// Limpar o conteúdo anterior
-				sectorInfoContainer.innerHTML = '';
-
-				// Iterar sobre os elementos e encontrar os que correspondem ao setor
-				for (var i = 0; i < majorInicioElements.length; i++) {
-					if (majorInicioElements[i].textContent === sectorName) {
-						// Encontrou o elemento correspondente, agora extrair a URL da imagem
-						var imageUrl = majorInicioElements[i].parentNode.querySelector('.image img').src;
-
-						// Criar elementos para exibir a imagem e o texto do setor
-						var sectorLink = document.createElement('a');
-						sectorLink.href = sectorHref;
-
-						var imageElement = document.createElement('img');
-						imageElement.src = imageUrl;
-						imageElement.alt = sectorName;
-
-						var h3Element = document.createElement('h3');
-						h3Element.textContent = sectorName;
-
-						// Adicionar elementos ao container sectorInfo
-						sectorLink.appendChild(imageElement);
-						sectorLink.appendChild(h3Element);
-						sectorInfoContainer.appendChild(sectorLink);
-
-						// Exibir o container
-						sectorInfoContainer.style.display = 'block';
-
-						return; // Termina a execução após encontrar o elemento correspondente
-					}
-				}
-
-				// Se não encontrar correspondência, limpa o nome do setor abaixo do input
-				clearSectorInfo();
-			}
-
-
-
-
-
-
-
-			// Esta função limpa o nome do setor abaixo do input
-			function clearSectorInfo() {
-				var sectorInfoContainer = document.getElementById('sectorInfo');
-				sectorInfoContainer.innerHTML = ''; // Limpa o conteúdo do container
-				sectorInfoContainer.style.display = 'none'; // Oculta o container
-			}
-
-			window.onload = function () {
-				var input = document.getElementById('searchInput');
-				var sectorInfoContainer = document.getElementById('sectorInfo');
-
-				// Define a largura inicial do input como zero
-				input.style.width = '0';
-
-				input.addEventListener('input', function () {
-					var inputValue = input.value.toLowerCase();
-					var h3Elements = document.querySelectorAll('h3.major-inicio');
-
-					var matchingSectors = [];
-
-					for (var i = 0; i < h3Elements.length; i++) {
-						var h3Text = h3Elements[i].textContent.toLowerCase();
-						if (h3Text.includes(inputValue)) {
-							matchingSectors.push(h3Elements[i].textContent); // Adiciona apenas o texto do h3
-						}
-					}
-
-					// Limpa o container antes de adicionar novos resultados
-					sectorInfoContainer.innerHTML = '';
-
-					// Adiciona os resultados ao container
-					if (matchingSectors.length > 0) {
-						for (var j = 0; j < matchingSectors.length; j++) {
-							var a = document.createElement('a');
-							a.textContent = matchingSectors[j];
-							a.href = h3Elements[j].parentElement.querySelector('a').getAttribute('href');
-
-							var p = document.createElement('p'); // Cria um novo parágrafo para cada link
-							p.style.marginBottom = '0'; // Define a margem inferior como zero para remover a distância entre cada h3
-							p.appendChild(a); // Adiciona o link ao parágrafo
-							sectorInfoContainer.appendChild(p); // Adiciona o parágrafo ao contêiner
-						}
-						sectorInfoContainer.style.display = 'block'; // Exibe o container
-					} else {
-						sectorInfoContainer.style.display = 'none'; // Oculta o container se não houver correspondência
-					}
-				});
-			};
-
-
 		</script>
-
-		<style>
-			.search-input {
-				width: 0;
-				/* Largura inicialmente zero para estar completamente recolhido */
-				transition: width 0.3s ease;
-				/* Adicionando transição para suavizar a animação */
-				overflow: hidden;
-				/* Esconder qualquer conteúdo que possa estar fora do campo de entrada */
-				float: right;
-				/* Colocar o campo de entrada à direita */
-			}
-
-			.expanded {
-				width: calc(100% - 30px);
-				/* Largura expandida */
-			}
-
-			#searchIcon {
-				cursor: pointer;
-				/* Altera o cursor para ponteiro */
-			}
-
-			#sectorInfo {
-				position: relative;
-				/* Para que o h3 possa ser posicionado em relação a este contêiner */
-				display: inline-block;
-				/* Para que ele não ocupe toda a largura */
-			}
-
-			#sectorInfo h3 {
-				display: none;
-				/* Comece escondido */
-				position: absolute;
-				/* Posicionado absolutamente em relação ao contêiner pai */
-				width: calc(100% - 30px);
-				/* Ocupa toda a largura do contêiner, respeitando o ícone de pesquisa */
-				background-color: white;
-				/* Cor de fundo branca */
-				border-radius: 10px;
-				/* Cantos arredondados */
-				box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
-				/* Sombra */
-				color: black;
-				/* Cor do texto */
-				padding: 10px;
-				/* Espaçamento interno */
-				top: calc(100% + 5px);
-				/* Alinhado abaixo do contêiner pai com um pequeno espaço */
-				left: 0;
-				/* Alinhado à esquerda do contêiner pai */
-				z-index: 1;
-				/* Colocado acima de outros conteúdos */
-				margin-top: 0;
-				/* Adicionando margem superior zero */
-			}
-
-			#sectorInfo h3:hover {
-				background-color: #616163;
-				/* Altera a cor de fundo ao passar o mouse */
-			}
-
-			#sectorInfo:hover h3 {
-				display: block;
-			}
-
-			#sectorInfo:hover {
-				background-color: #616163;
-				/* Altera o background quando o mouse passa sobre o contêiner pai */
-				border-radius: 10px;
-			}
-		</style>
-
-
-<!-- Menu -->
-<nav id="menu">
-    <div class="inner">
-        <h2>Menu</h2>
-        <ul class="links" style="margin: 0;">
-            <li><a href="homepage.html">INÍCIO</a></li>
-            <li><a href="Corporativo.html">CORPORATIVO</a></li>
-            <li><a href="Operações.html">OPERAÇÕES</a></li>
-            <li><a href="Clientes.html">CLIENTES</a></li>
-            <li><a href="https://painel.umentor.com.br/business/">UNICOMFRIO</a></li>
-            <li><a href="https://comfrio.com.br/">SITE OFICIAL</a></li>
-            <li><a href="Melhoria.html" target="_blank">CRÉDITOS</a></li>
-			<ul style="display: flex; justify-content: center; margin: 0; padding: 0;">
-				<li style="list-style: none; position: fixed; bottom: 0; text-align: center;">
-					<img src="images/melhoria.png" style="width: 40%;">
-				</li>
-			</ul>			
-        </ul>
-        <a href="#" class="close"></a>
-    </div>
-</nav>
-
 		<!-- Banner -->
 		<section id="banner" style="position: relative; overflow: hidden;">
 			<!-- Fundo com blur -->
@@ -414,26 +137,20 @@
 			z-index: -1;
 		">
 		</div>
-		
 			<!-- Conteúdo -->
 			<div class="inner" style="position: relative; text-align: center; padding: 20px;">
-				<h2 style="color:#fff; margin: 0;">PROJETOS A3 | CORP.</h2>
-				<p style="color:#fff; margin: 0;">Nós cuidamos do alimento do Brasil</p>
+				<h2 style="color:#fff; margin: 0;">LISTA MESTRA | EXC. OPERACIONAL</h2>
 			</div>
 		</section>
-
 		<!-- Wrapper -->
 		<section id="wrapper">
-
 	</div>
 </section>
-
 			<!-- One -->
 			<section id="one" class="wrapper spotlight style1" style="padding: 20px 8em 0em 8em; position: relative; display: flex; flex-wrap: wrap; background-image: url('images/background-logo.jpg');
 			background-size: cover;
 			background-position: left center; /* ajustado para a direita e centralizado verticalmente */
 			background-repeat: no-repeat;">
-				
 				<div class="table-wrapper" style="width: 100%; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column;">
 					<div>
 						<div>
@@ -447,467 +164,161 @@
 							/* Define a cor de fundo para linhas pares */
 						}
 					</style>
-					<table id="default-table" style="background-color: white; text-align: center;">
-						<div class="filtros-container">
-							<div class="filtros-linha">
-								<div class="filtro">
-									<label for="yearFilter">Ano</label>
-									<div class="select-wrapper">
-										<select id="yearFilter">
-											<option value="todos">Todos</option>
-											<option value="2024">2024</option>
-											<option value="2025">2025</option>
-										</select>
-									</div>
-								</div>
-								<div class="filtro">
-									<label for="categoryFilter">Categoria</label>
-									<div class="select-wrapper">
-										<select id="categoryFilter">
-											<option value="todos">Todos</option>
-											<option value="Quantitativo">Quantitativo</option>
-											<option value="Qualitativo">Qualitativo</option>
-										</select>
-									</div>
-								</div>
-								<div class="filtro">
-									<label for="unitFilter">Unidade</label>
-									<div class="select-wrapper">
-										<select id="unitFilter">
-											<option value="todas">Todas</option>
-											<option value="Jarinu">Jarinu</option>
-											<option value="Várias">Várias</option>
-											<option value="Guarulhos I">Guarulhos I</option>
-										</select>
-									</div>
-								</div>
-								<div class="filtro">
-									<label for="segmentFilter">Segmento</label>
-									<div class="select-wrapper">
-										<select id="segmentFilter">
-											<option value="todos">Todos</option>
-											<option value="Food Service">Food Service</option>
-											<option value="FMCG">FMCG</option>
-											<option value="Corporativo">Corporativo</option>
-										</select>
-									</div>
-								</div>
-								<div class="filtro">
-									<label for="typeFilter">Tipo</label>
-									<div class="select-wrapper">
-										<select id="typeFilter">
-											<option value="todos">Todos</option>
-											<option value="Operacional">Operacional</option>
-											<option value="Dashboard">Dashboard</option>
-										</select>
-									</div>
-								</div>
-						
-						<thead style="background-color: #2e3141; box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);">
-							<tr>
-								<th style="text-align: center; padding-top: 1em;">Ano</th>
-								<th style="text-align: center;">Descrição</th>
-								<th style="text-align: center;">Categoria</th>
-								<th style="text-align: center;">Unidade</th>
-								<th style="text-align: center;">Segmento</th>
-								<th style="text-align: center;">Tipo</th>
-								<th style="text-align: center;">Link</th>
-							</tr>
-						</thead>
-						<tbody
-							style="font-weight: bold; color: #666666; background-color: white; box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.4);">
-							<tr>
-								<td>2024</td>
-								<td>Aumento de Produtividade Copacking</td>
-								<td>Quantitativo</td>
-								<td>Jarinu</td>
-								<td>Food Service</td>
-								<td>Operacional</td>
-								<td>
-									<a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/ERbINf7Oh0dOva5SlI5alKgB5g5mp094WLjSCwZU8TWQfw?e=wyTiqY" style="display: flex; justify-content: center; align-items: center;">
-										<img src="images/link.png" alt="Link" style="width: 20px; height: 20px;">
-									</a>
-								</td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Aumento de Produtividade Separação</td>
-								<td>Quantitativo</td>
-								<td>Jarinu</td>
-								<td>Food Service</td>
-								<td>Operacional</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EbE3g6JDQLtNnmHDA9SL53wBeHte34JDKXQntvTQWDvi4g?e=fCJNBc"  style="display: flex; justify-content: center; align-items: center;">
-									<img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Automação Processo de Conferência</td>
-								<td>Quantitativo</td>
-								<td>Jarinu</td>
-								<td>FMCG</td>
-								<td>Operacional</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EevyBbszoVNJo7DL_yIQO9gBvnqqIIL4Pn3g2lXmvDCYsQ?e=xhGEnb"  style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Automação Processo de E-commerce</td>
-								<td>Quantitativo</td>
-								<td>Jarinu</td>
-								<td>FMCG</td>
-								<td>Operacional</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/ESuKsOWAK8FBsDEstw-uE24BQ9Bd0HHHvszRczBxBaHIUw?e=8Ax4C3"  style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard de Consumo de Água</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Corporativo</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/ETwCbTc0iiVJvkMPPwWcLYwBRYJoowEBweqfc78EtupCSw?e=eVF3Kg"  style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard de Energia Elétrica</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Corporativo</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EZ1qzam5xwtKt_LFSKJBKVABzALZ7UMg62C_4lNxV1RW_Q?e=FHgaEJ" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard de Viagens</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Corporativo</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EaBokeCIWCJGh2OX2YtRq8kBmItcs7FgwH3OSr1UaEJVnA?e=Yz4TPp" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Mapeamento Processos Administrativos</td>
-								<td>Qualitativo</td>
-								<td>Guarulhos I</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Ef42gl2C7UNDl6BPJinU6MgBDKR0kJCdIRRmOtyJ_-wpsw?e=aMsHhV" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Otimização Etiquetas e Carrinhos - UA</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EWm4nt2VPABGvMaNTTRCAYQBgFprh59wlfjzU6PRZra5_Q?e=ga2Q3T" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Painel Operacional</td>
-								<td>Qualitativo</td>
-								<td>Limeira</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EdTR_wD4MkdEn_lyprwHiHcBS5NKWmu4nDBRQ4E-i3MspQ?e=KCwyWO" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Painel Operacional</td>
-								<td>Qualitativo</td>
-								<td>Uberlândia III</td>
-								<td>Agronegócio</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EVUg-fE_3IlGn1uE4z4tUBYB3TykJBZ6PBQM2ukSZW6g-g?e=JlnePJ" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Painel Operacional</td>
-								<td>Qualitativo</td>
-								<td>Jarinu</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EQ2oa4MU25VCgPgfI20BSWsBEP-yiho5S1dNHSTqqUFdIQ?e=KDZFtp" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Painel Operacional</td>
-								<td>Qualitativo</td>
-								<td>Lucas do Rio Verde</td>
-								<td>Agronegócio</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EbNHw-w9XyZEsHUzh-osV4wBzz5MrHyQVgMJhoczcVoQoA?e=ENi7AG" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard de Reclamações</td>
-								<td>Qualitativo</td>
-								<td>Rio Claro</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EYUvTfzNeKNFi8Z9Qe47rJIBpajCPbV3fE6bcuPeZg7TPw?e=7eiOVq" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard Produtividade - Seara</td>
-								<td>Qualitativo</td>
-								<td>Bebedouro I </td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EewCmY3f2PdAlRO_T8pilKgBdBN5hIg7_qZLpPsRSgZEQQ?e=s7aFP2" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard Produtividade Individual</td>
-								<td>Qualitativo</td>
-								<td>Bauru</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EUvQqbnBePtPlWMeR4N04PEB0kLFJQWB2SFwKEDFr6zwRQ?e=Lobo0v" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard Produtividade Individual</td>
-								<td>Qualitativo</td>
-								<td>Guarulhos II</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EXj8EKUXhRVEoy8ykMxz1gQBGyHVVGzYZkDkE3qMrxzFdA?e=aFLm0d" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard Produtividade Individual</td>
-								<td>Qualitativo</td>
-								<td>Pinhais</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EaLytpps3C1Ok60_JEwVKZoBL_lxblBhP5RWjreamSz96g?e=ZuwKdw" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard Produtividade Individual</td>
-								<td>Qualitativo</td>
-								<td>Uberlandia I</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/ETGZWQGbJ-9OuNw66yJvj5IBMwPtYR-lJGPaZ0qOuuFFrw?e=ZqV0yG" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Painel Status Operacional</td>
-								<td>Qualitativo</td>
-								<td>Guarulhos I</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EfWSujzlfoxGgup5-hH8YiYB_kBqrt8WPHKY5didnTOQrA?e=lhI6cK" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Validação de Estoque</td>
-								<td>Quantitativo</td>
-								<td>Guarulhos I</td>
-								<td>FMCG</td>
-								<td>Operacional</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Eb3sj9NpWpFKr-qsZqS7SVoBsEGhpNYEwWxhSEFXWgvUUA?e=uq14pn" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Otimização de Layout Picking</td>
-								<td>Quantitativo</td>
-								<td>Guarulhos I</td>
-								<td>FMCG</td>
-								<td>Operacional</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EYu93Pud-udDmg2GZwckbdcBxlILiqkGZ2zl5VgdEmbtrA?e=nalUF9" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Readequação de Escala no Inbound</td>
-								<td>Quantitativo</td>
-								<td>Guarulhos I</td>
-								<td>FMCG</td>
-								<td>Operacional</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EaDP25X7y1ZBvE5V7-m33FQBv_EYgm-tpAK15Dedl-YNqA?e=IbWRA7" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2024</td>
-								<td>Dashboard Produtividade Individual</td>
-								<td>Qualitativo</td>
-								<td>Simões Filho</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EfCzMYAUwEZPqmANOPcAP_kB-4Vd_qTUKiKP-ON0RQbuyQ?e=7cJPIY" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Gestão de Insumos - Bayer</td>
-								<td>Qualitativo</td>
-								<td>Uberlândia II</td>
-								<td>Agronegócio</td>
-								<td>Aplicativo</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EaqqxUj1-pdNpZzJpt0r23wBqS87G8mYzDrkBte5QJSS1Q?e=GSh4hb" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard de Planos de Ação</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Corporativo</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Ecjs47v8ar5EnjV2uFHARLUBL7q54SzzitJ-nDSpMsCc6w?e=9K67DS" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard de Avaliação de Fornecedor - Bayer</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Agronegócio</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Eez1yw892sJOsL_VgXOjMxYBGK4aVKAyPESwafY0MOucdw?e=Q29xWL" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard KPIs - Bayer (Seminis)</td>
-								<td>Qualitativo</td>
-								<td>Campinas</td>
-								<td>Agronegócio</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EWCc920TT3ZEtme5DC1CD6YBHFpJRyCqaqkSktNkTzJAmg?e=32vt7w" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard KPIs - Clientes</td>
-								<td>Qualitativo</td>
-								<td>Jarinu</td>
-								<td>Food Service</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EepzuQ2VfiNHmMGsYYTLfRMBqRmPP93mxDSQpMyLclCAYQ?e=frHEdV" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard KPIs Operacionais</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Transportes</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Eeng7vnV9kNJtXrSZZJlh1kBryH2hHlj3TlRH6H1LN-9rA?e=uCiTF3" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard Monitoramento Qualidade - Lindt</td>
-								<td>Qualitativo</td>
-								<td>Jarinu</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Ea4-AFyPp8dDnOlPkszd72kBFVJGsRzK929_E4_vFJfAOg?e=osdMJJ" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard de Multas e Notificações</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Corporativo</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Eb5y07_RuNdCtAJyvlLii3QBSfuXrE1cVEtANERG3zbQRw?e=jJ2BFV" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard SLA - Danone</td>
-								<td>Qualitativo</td>
-								<td>Simões Filho</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EdNfI5fDXLVBmuDvZWqF5JABvK_0oWY-n5X81V4OcKuK-Q?e=L4oRLI" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard Produtividade Individual - Seara</td>
-								<td>Qualitativo</td>
-								<td>Rio Claro</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/Ec4zRxNBwb5KvLsPV4zYmEkBw2v7fBbgGj6QJPeb7QXdrA?e=sUY3pI" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard Produtividade Individual</td>
-								<td>Qualitativo</td>
-								<td>Jarinu</td>
-								<td>Food Service</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EYADFxLdGMNGoDmqHe2Ax7YBVHuiPU0M3Lr3JxHVbYXH8Q?e=e7Kah7" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard Produtividade Individual - Reckitt</td>
-								<td>Qualitativo</td>
-								<td>Extrema</td>
-								<td>FMCG</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EZ8E1acxwXZChYnpGnS5CjABtpSfcsFUfqOf-Cv9lVxwzw?e=WAGDIR" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard de Temperatura e Umidade</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Corporativo</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="https://stocktechsa.sharepoint.com/:b:/s/Comfrio-MelhoriaContnua/EbCh-tN6fdZIitgl7wkbrSEBKwVZimAO1UYE_y8dfXRBjQ?e=M4w5tI" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
-							<tr>
-								<td>2025</td>
-								<td>Dashboard KPIs - Corteva</td>
-								<td>Qualitativo</td>
-								<td>Várias</td>
-								<td>Agronegócio</td>
-								<td>Dashboard</td>
-								<td><a class="button primary small" target="_blank" href="#" style="display: flex; justify-content: center; align-items: center;"><img src="images/link.png" alt="Link" style="width: 20px; height: 20px;"></a></td>
-							</tr>
+					<!-- Formulário para adicionar documento -->
+<section style="margin: 2em auto; width: 90%; max-width: 800px; background: #f9f9f9; padding: 1em; border-radius: 8px; box-shadow: 0 0 10px #ccc;">
+  <h3 style="color: #616163;">Adicionar Novo Documento</h3>
+  <form id="formAdicionarDocumento">
+    <input type="text" id="tituloInput" placeholder="Título" required />
+    <input type="text" id="autorInput" placeholder="Autor" required />
+    <input type="date" id="dataInput" required />
+    <input type="file" id="arquivoInput" accept=".pdf,.doc,.docx,.xls,.xlsx" required />
+    <button type="submit">Adicionar Documento</button>
+  </form>
+  <p id="statusMessage" style="color: green; font-weight: bold; margin-top: 0.5em;"></p>
+</section>
+<script>
+  const form = document.getElementById("formAdicionarDocumento");
+  const statusMessage = document.getElementById("statusMessage");
+  const arquivoInput = document.getElementById("arquivoInput");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const titulo = document.getElementById("tituloInput").value.trim();
+    const autor = document.getElementById("autorInput").value.trim();
+    const data_criacao = document.getElementById("dataInput").value;
+
+    if (!arquivoInput.files.length) {
+      statusMessage.style.color = "red";
+      statusMessage.textContent = "Por favor, selecione um arquivo.";
+      return;
+    }
+
+    const arquivo = arquivoInput.files[0];
+
+    try {
+      statusMessage.style.color = "black";
+      statusMessage.textContent = "Fazendo upload do arquivo...";
+
+      // Referência ao Firebase Storage na pasta documentos
+      const storageRef = firebase.storage().ref();
+      const arquivoRef = storageRef.child('documentos/' + Date.now() + '_' + arquivo.name);
+
+      // Upload do arquivo
+      const snapshot = await arquivoRef.put(arquivo);
+
+      // Pega a URL pública do arquivo
+      const urlArquivo = await snapshot.ref.getDownloadURL();
+
+      // Salva no Firestore com a URL do arquivo
+      await db.collection("documentos").add({
+        titulo,
+        autor,
+        data_criacao,
+        conteudo: urlArquivo
+      });
+
+      statusMessage.style.color = "green";
+      statusMessage.textContent = "Documento adicionado com sucesso!";
+      form.reset();
+      carregarTabela(); // Atualiza tabela
+
+    } catch (error) {
+      console.error("Erro ao adicionar documento:", error);
+      statusMessage.style.color = "red";
+      statusMessage.textContent = "Erro ao adicionar documento. Veja o console.";
+    }
+  });
+// Função para carregar e popular a tabela, com botão de excluir
+async function carregarTabela() {
+  const tbody = document.getElementById("projectsTableBody");
+  tbody.innerHTML = ""; // limpa tabela
+  try {
+    const querySnapshot = await db.collection("documentos").get();
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      const docId = doc.id;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${data.titulo || ""}</td>
+        <td>${data.autor || ""}</td>
+		<td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
+        <td>${data.data_criacao || ""}</td>
+        <td>
+          <button data-id="${docId}" class="btnExcluir" style="background-color:#c0392b; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
+            Excluir
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    // Depois de inserir as linhas, adiciona os event listeners aos botões excluir
+    const botoesExcluir = document.querySelectorAll(".btnExcluir");
+    botoesExcluir.forEach(botao => {
+      botao.addEventListener("click", async (e) => {
+        const id = e.target.getAttribute("data-id");
+        if (confirm("Tem certeza que quer excluir este documento?")) {
+          try {
+            await db.collection("documentos").doc(id).delete();
+            alert("Documento excluído com sucesso!");
+            carregarTabela(); // atualiza a tabela
+          } catch (error) {
+            console.error("Erro ao excluir documento:", error);
+            alert("Erro ao excluir documento. Veja o console.");
+          }
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Erro ao buscar documentos:", error);
+    tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Erro ao carregar documentos</td></tr>`;
+  }
+}
+// Inicializa a tabela
+carregarTabela();
+</script>
+<table id="default-table" style="background-color: white; text-align: center;">			
+<thead style="background-color: #2e3141; box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);">
+  <tr>
+    <th style="text-align: center; padding-top: 1em;">Título</th>
+    <th style="text-align: center;">Autor</th>
+    <th style="text-align: center;">Conteúdo</th>
+    <th style="text-align: center;">Data</th>
+    <th style="text-align: center;">Ações</th> <!-- nova coluna -->
+  </tr>
+</thead>
+						<tbody id="projectsTableBody" style="font-weight: bold; color: #666666; background-color: white; box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.4);">
+						<!-- Linhas da tabela aqui -->
+						</tbody>
+							<script>
+							const tbody = document.getElementById("projectsTableBody");
+							tbody.innerHTML = ""; // limpa tabela
+							db.collection("documentos").get().then(querySnapshot => {
+								querySnapshot.forEach(doc => {
+								const data = doc.data();
+								const tr = document.createElement("tr");
+								tr.innerHTML = `
+									<td>${data.titulo || ""}</td>
+									<td>${data.autor || ""}</td>
+									<td>${data.conteudo || ""}</td>
+									<td>${data.data_criacao || ""}</td>
+								`;
+								tbody.appendChild(tr);
+								});
+							}).catch(error => {
+								console.error("Erro ao buscar documentos:", error);
+								tbody.innerHTML = `<tr><td colspan="4" style="color:red; text-align:center;">Erro ao carregar documentos</td></tr>`;
+							});
+							</script>
 						</tbody>
 					</table>
 					<ul class="actions">
-						<a href="Corporativo.html" class="special" style="margin: 0;">VOLTAR</a>
+						<a href="homepage.html" class="special" style="margin: 0;">VOLTAR</a>
 					</ul>
 				</div>
-				
 				</div>
 			</div>
-				
-					
-				
-
-
 			</section>
-
-			<!-- Footer -->
-			<section id="footer" align="center"
-				style="background-image: url('images/background-logo-footer.jpg'); background-size: cover; background-position: right center; background-repeat: no-repeat;">
-				<div class="inner">
-
-					<ul class="copyright" style="margin-top: 0em;">
-
-						<img src=" images/LogoComfrio.png" style="vertical-align: middle; width: 100px; height: auto;">
-						<li style="margin: 0;">2025 &copy; <a href="https://comfrio.com.br/">Comfrio
-							</a> - Todos os direitos reservados.</li>
-						<a href="https://www.facebook.com/ComfrioOficial/" class="icon brands fa-facebook-f"
-							style="color: white;"></a>
-						<a href="https://www.instagram.com/comfriooficial/" class="icon brands fa-instagram"
-							style="padding-left: 1em; color: white;"></a>
-						<a href="https://www.linkedin.com/company/comfriooficial/" class="icon brands fa-linkedin"
-							style="padding-left: 1em; color: white;"></a>
-
-
-						<li>Desenvolvido por: <a href="Melhoria.html">Melhoria Contínua</a></li>
-						<img src="images/melhoria.png" style="vertical-align: middle; width: 100px; height: auto;">
-						</li>
-
-					</ul>
-				</div>
-
-			</section>
-
-	</div>
-
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.scrollex.min.js"></script>
@@ -917,156 +328,19 @@
 	<script src="assets/js/main.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			// Inicializa o slick apenas se a seção estiver visível
-			if ($('#four').is(':visible')) {
-				$('.features').slick({
-					dots: true,
-					infinite: true,
-					speed: 1500,
-					autoplay: true,
-					autoplaySpeed: 0,
-					slidesToShow: 4.66, // Ajustado para exibir um número inteiro de slides
-					slidesToScroll: 1,
-					prevArrow: '<button type="button" class="slick-prev">Previous</button>',
-					nextArrow: '<button type="button" class="slick-next">Next</button>',
-					responsive: [
-						{
-							breakpoint: 1024,
-							settings: {
-								slidesToShow: 3,
-								slidesToScroll: 3
-							}
-						},
-						{
-							breakpoint: 600,
-							settings: {
-								slidesToShow: 1,
-								slidesToScroll: 1
-							}
-						}
-					]
-				});
-			}
-		});
-
-
-		function expandInner(element) {
-			element.style.transition = "width 0.5s ease";
-			element.style.width = "100%";
-
-			// Define a opacidade dos outros elementos .inner para 0.5
-			var siblingElements = getSiblings(element);
-			for (var i = 0; i < siblingElements.length; i++) {
-				siblingElements[i].style.opacity = '0.4';
-			}
-		}
-
-		function collapseInner(element) {
-			element.style.transition = "width 0.5s ease";
-			element.style.width = ""; // Reseta a largura para o valor padrão
-
-			// Define a opacidade dos outros elementos .inner de volta para 1
-			var siblingElements = getSiblings(element);
-			for (var i = 0; i < siblingElements.length; i++) {
-				siblingElements[i].style.opacity = '1';
-			}
-		}
-
-		document.getElementById('expandAllBtn').addEventListener('click', expandAll);
-		document.getElementById('collapseAllBtn').addEventListener('click', collapseAll);
-
-		document.addEventListener("DOMContentLoaded", function () {
-			var colaboradoresLi = document.getElementById("colaboradores");
-			var unidadesLi = document.getElementById("unidades");
-			var clientesLi = document.getElementById("clientes");
-
-			function showSubmenu(li) {
-				var submenu = li.querySelector(".submenu");
-				submenu.classList.add("active");
-			}
-
-			function hideSubmenu(li) {
-				var submenu = li.querySelector(".submenu");
-				submenu.classList.remove("active");
-			}
-
-			colaboradoresLi.addEventListener("mouseenter", function () {
-				showSubmenu(colaboradoresLi);
-			});
-			colaboradoresLi.addEventListener("mouseleave", function () {
-				hideSubmenu(colaboradoresLi);
-			});
-
-			unidadesLi.addEventListener("mouseenter", function () {
-				showSubmenu(unidadesLi);
-			});
-			unidadesLi.addEventListener("mouseleave", function () {
-				hideSubmenu(unidadesLi);
-			});
-
-			clientesLi.addEventListener("mouseenter", function () {
-				showSubmenu(clientesLi);
-			});
-			clientesLi.addEventListener("mouseleave", function () {
-				hideSubmenu(clientesLi);
-			});
-
-			// Adicionar eventos de clique aos submenus
-			var submenus = document.querySelectorAll(".submenu");
-			submenus.forEach(function (submenu) {
-				submenu.addEventListener("click", function (event) {
-					event.stopPropagation(); // Impede que o evento de clique no submenu propague para o menu principal
-				});
-			});
-
-			// Adicionar evento de clique ao botão de close
-			document.querySelector("#menu .close").addEventListener("click", function (event) {
-				event.preventDefault();
-				// Fechar o menu aqui
-				console.log("Fechar menu");
-			});
-		});
-
-		function showLoadingModal() {
-			// Exibe o modal de barra de carregamento
-			document.getElementById("loaderModal").style.display = "block";
-
-			// Armazena a posição atual da barra de rolagem
-			var scrollPosition = window.scrollY;
-
-			// Define um atraso para o redirecionamento (2 segundos neste exemplo)
-			setTimeout(function () {
-				// Redireciona para a página index
-				window.location.href = "index.html";
-
-				// Restaura a posição da barra de rolagem após o redirecionamento
-				window.scrollTo(0, scrollPosition);
-			}, 2000); // Ajuste este valor conforme necessário
-
-			// Evita o comportamento padrão do link (redirecionamento imediato)
-			event.preventDefault();
-		}		
-	</script>
-
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		const filterButtons = document.querySelectorAll(".filter-btn");
 		const painelCards = document.querySelectorAll("#painel-container .inner");
-	
 		filterButtons.forEach(button => {
 			button.addEventListener("click", function () {
 				// Remove 'active' de todos os botões
 				filterButtons.forEach(btn => btn.classList.remove("active"));
 				// Adiciona 'active' ao botão clicado
 				this.classList.add("active");
-	
 				const filtro = this.getAttribute("data-filter");
-	
 				painelCards.forEach(card => {
 					const categoria = card.getAttribute("data-categoria");
-	
 					if (filtro === "todos" || filtro === categoria) {
 						card.style.display = "flex"; // ou "block", dependendo do layout
 					} else {
@@ -1077,98 +351,7 @@
 		});
 	});
 	</script>
-	
-
 	<script>
-		const filters = {
-    year: document.getElementById('yearFilter'),
-    unit: document.getElementById('unitFilter'),
-    segment: document.getElementById('segmentFilter'),
-    type: document.getElementById('typeFilter'),
-    category: document.getElementById('categoryFilter')
-};
-
-function getUniqueValuesFromVisibleRows(columnIndex, filteredRows) {
-    const values = new Set();
-    filteredRows.forEach(row => {
-        values.add(row.cells[columnIndex].textContent.trim());
-    });
-    return Array.from(values).sort();
-}
-
-function updateFilterOptions() {
-    const rows = Array.from(document.querySelectorAll('#default-table tbody tr'));
-    const selected = {
-        year: filters.year.value,
-        unit: filters.unit.value,
-        segment: filters.segment.value,
-        type: filters.type.value,
-        category: filters.category.value
-    };
-
-    const filterMapping = {
-        year: { index: 0, default: 'todos' },
-        category: { index: 2, default: 'todos' },
-        unit: { index: 3, default: 'todas' },
-        segment: { index: 4, default: 'todos' },
-        type: { index: 5, default: 'todos' }
-    };
-
-    for (const key in filters) {
-        const select = filters[key];
-        const { index, default: defaultLabel } = filterMapping[key];
-        const currentValue = select.value;
-
-        const filteredRows = rows.filter(row => {
-            return Object.keys(filters).every(k => {
-                if (k === key) return true;
-                const colIndex = filterMapping[k].index;
-                const cellValue = row.cells[colIndex].textContent.trim();
-                const selectedValue = selected[k];
-                return selectedValue === 'todos' || selectedValue === 'todas' || cellValue === selectedValue;
-            });
-        });
-
-        const options = getUniqueValuesFromVisibleRows(index, filteredRows);
-
-        select.innerHTML = `<option value="${defaultLabel}">${defaultLabel.charAt(0).toUpperCase() + defaultLabel.slice(1)}</option>`;
-        options.forEach(opt => {
-            const isSelected = opt === currentValue;
-            select.innerHTML += `<option value="${opt}" ${isSelected ? 'selected' : ''}>${opt}</option>`;
-        });
-
-        if (!options.includes(currentValue)) {
-            select.value = defaultLabel;
-        }
-    }
-}
-
-function aplicarFiltros() {
-    const rows = document.querySelectorAll('#default-table tbody tr');
-    const selectedYear = filters.year.value;
-    const selectedUnit = filters.unit.value;
-    const selectedSegment = filters.segment.value;
-    const selectedType = filters.type.value;
-    const selectedCategory = filters.category.value;
-
-    rows.forEach(row => {
-        const year = row.cells[0].textContent.trim();
-        const category = row.cells[2].textContent.trim();
-        const unit = row.cells[3].textContent.trim();
-        const segment = row.cells[4].textContent.trim();
-        const type = row.cells[5].textContent.trim();
-
-        const matchYear = selectedYear === 'todos' || year === selectedYear;
-        const matchUnit = selectedUnit === 'todas' || unit === selectedUnit;
-        const matchSegment = selectedSegment === 'todos' || segment === selectedSegment;
-        const matchType = selectedType === 'todos' || type === selectedType;
-        const matchCategory = selectedCategory === 'todos' || category === selectedCategory;
-
-        row.style.display = (matchYear && matchUnit && matchSegment && matchType && matchCategory) ? '' : 'none';
-    });
-
-    updateFilterOptions();
-}
 
 // Eventos
 for (const key in filters) {
@@ -1180,83 +363,46 @@ window.addEventListener('DOMContentLoaded', () => {
     aplicarFiltros();
 });
 	</script>
-	
-	
-
-
-
 	<a href="#top">
 		<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 25 20" data-name="Layer 1">
 			<path
 				d="M17.71,11.29l-5-5a1,1,0,0,0-.33-.21,1,1,0,0,0-.76,0,1,1,0,0,0-.33.21l-5,5a1,1,0,0,0,1.42,1.42L11,9.41V17a1,1,0,0,0,2,0V9.41l3.29,3.3a1,1,0,0,0,1.42,0A1,1,0,0,0,17.71,11.29Z" />
 		</svg>
 	</a>
-
 	<style>
 		.hidden {
 			display: none;
 		}
-
 		/* Ajusta o tamanho do ícone dentro dos botões slick-prev e slick-next */
 		.slick-prev:before,
 		.slick-next:before {
 			font-size: 35px;
 			/* Define o tamanho do ícone */
 		}
-
-
 		#four .inner {
 			margin: 0 auto;
 			text-align: center;
 			/* Alinha o texto ao centro */
 			transform: scale(0.8);
 		}
-
-
 		.actions {
 			margin-top: 20px;
 			/* Espaçamento superior */
 			text-align: center;
 			/* Alinha ao centro */
 		}
-
-
-		/* Adiciona estilos para os submenus */
-		.submenu {
-			opacity: 0;
-			max-height: 0;
-			overflow: hidden;
-			transition: max-height 0.6s ease, opacity 0.6s ease;
-		}
-
-		.submenu.active {
-			max-height: 2000px;
-			/* Ajuste conforme necessário */
-			opacity: 1;
-		}
-
-		/* Adiciona rolagem vertical ao menu */
-		#menu .inner {
-			overflow-y: auto;
-			max-height: 800vh;
-			/* Defina a altura máxima conforme necessário */
-		}
-
 		.image img {
 			transition: transform 0.3s ease-out;
 			/* ou ease-in ou linear */
 		}
-
 		.image img:hover {
 			transform: scale(0.98);
 		}
-
 		.wrapper.spotlight.style1 {
 			display: flex;
 			justify-content: space-around;
 			/* Ou outro valor de alinhamento, como space-between */
 		}
-
 		/* Estilos para o modal */
 		.modal {
     display: none; /* Inicialmente invisível */
@@ -1272,7 +418,6 @@ window.addEventListener('DOMContentLoaded', () => {
     justify-content: center;
     align-items: center; /* Centraliza o conteúdo */
 }
-
 /* Conteúdo do modal loader */
 .modal-content {
     background-color: transparent;
@@ -1281,7 +426,6 @@ window.addEventListener('DOMContentLoaded', () => {
     text-align: center;
     border-radius: 10px;
 }
-
 /* Estilos para o loader */
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
@@ -1292,7 +436,6 @@ window.addEventListener('DOMContentLoaded', () => {
     animation: spin 1.5s linear infinite;
     margin: auto;
 }
-
 		@keyframes spin {
 			0% {
 				transform: rotate(0deg);
@@ -1307,19 +450,11 @@ window.addEventListener('DOMContentLoaded', () => {
   transform: scale(1);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
-
 #painel-container .inner.hide {
   opacity: 0;
   transform: scale(0.95);
   pointer-events: none;
 }
-
-
-
-
-
-
-
 .filtros-linha {
     display: flex;
     flex-wrap: wrap;
@@ -1327,25 +462,21 @@ window.addEventListener('DOMContentLoaded', () => {
     justify-content: center;
     margin: 2em 0;
 }
-
 .filtro {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     min-width: 10em;
 }
-
 .filtro label {
     font-weight: bold;
     color: #616163;
     align-self: center;
 }
-
 .select-wrapper {
     position: relative;
     width: 100%;
 }
-
 .filtro select {
     padding: 0.5em;
     padding-right: 30px;  /* Espaço para o ícone */
@@ -1360,13 +491,11 @@ window.addEventListener('DOMContentLoaded', () => {
     appearance: none; /* Remove a seta no Chrome */
     font-weight: bold; /* Torna o texto em negrito */
 }
-
 .filtro select option {
     background-color: white; /* Fundo branco para cada opção */
     color: #666;
     font-weight: bold; /* Torna o texto em negrito */
 }
-
 /* Adiciona a seta para baixo */
 .filtro select::after {
     content: '\f0d7'; /* Código da seta para baixo no FontAwesome */
@@ -1379,7 +508,6 @@ window.addEventListener('DOMContentLoaded', () => {
     color: #666;
     pointer-events: none;  /* Garante que o clique não seja afetado pela seta */
 }
-
 /* Adiciona borda ao redor de todos os filtros */
 .filtros-container {
     border: 1px solid #ccc;  /* Borda cinza */  /* Adiciona um pouco de espaçamento dentro da borda */
@@ -1387,23 +515,14 @@ window.addEventListener('DOMContentLoaded', () => {
     background-color: #fff; /* Garante fundo branco dentro da borda */
 	width: 100%;
 }
-
-
-
 	</style>
-
-
 <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-storage-compat.js"></script>
 <script src="auth.js"></script>
 <script>
   checkAuth();
 </script>
-
-
-
-
-
 </body>
-
 </html>
