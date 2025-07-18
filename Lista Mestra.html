@@ -233,16 +233,19 @@
 async function carregarTabela() {
   const tbody = document.getElementById("projectsTableBody");
   tbody.innerHTML = ""; // limpa tabela
+
   try {
     const querySnapshot = await db.collection("documentos").get();
+
     querySnapshot.forEach(doc => {
       const data = doc.data();
       const docId = doc.id;
+
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${data.titulo || ""}</td>
         <td>${data.autor || ""}</td>
-		<td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
+        <td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
         <td>${data.data_criacao || ""}</td>
         <td>
           <button data-id="${docId}" class="btnExcluir" style="background-color:#c0392b; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
@@ -252,30 +255,58 @@ async function carregarTabela() {
       `;
       tbody.appendChild(tr);
     });
+
     // Depois de inserir as linhas, adiciona os event listeners aos botões excluir
     const botoesExcluir = document.querySelectorAll(".btnExcluir");
+
     botoesExcluir.forEach(botao => {
       botao.addEventListener("click", async (e) => {
         const id = e.target.getAttribute("data-id");
+
         if (confirm("Tem certeza que quer excluir este documento?")) {
           try {
-            await db.collection("documentos").doc(id).delete();
-            alert("Documento excluído com sucesso!");
-            carregarTabela(); // atualiza a tabela
+            // 1. Busca o documento no Firestore
+            const docRef = db.collection("documentos").doc(id);
+            const doc = await docRef.get();
+
+            if (!doc.exists) {
+              alert("Documento não encontrado.");
+              return;
+            }
+
+            const data = doc.data();
+            const urlArquivo = data.conteudo;
+
+            // 2. Exclui o arquivo do Firebase Storage, se existir
+            if (urlArquivo) {
+              const storageRef = firebase.storage().refFromURL(urlArquivo);
+              await storageRef.delete();
+              console.log("Arquivo excluído do Storage.");
+            }
+
+            // 3. Exclui o documento do Firestore
+            await docRef.delete();
+            alert("Documento e arquivo excluídos com sucesso!");
+
+            // 4. Atualiza a tabela
+            carregarTabela();
+
           } catch (error) {
-            console.error("Erro ao excluir documento:", error);
-            alert("Erro ao excluir documento. Veja o console.");
+            console.error("Erro ao excluir:", error);
+            alert("Erro ao excluir o documento ou o arquivo. Veja o console.");
           }
         }
       });
     });
+
   } catch (error) {
     console.error("Erro ao buscar documentos:", error);
     tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Erro ao carregar documentos</td></tr>`;
   }
 }
-// Inicializa a tabela
-carregarTabela();
+
+// Chama a função ao carregar a página
+document.addEventListener("DOMContentLoaded", carregarTabela);
 </script>
 <table id="default-table" style="background-color: white; text-align: center;">			
 <thead style="background-color: #2e3141; box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);">
@@ -523,6 +554,11 @@ window.addEventListener('DOMContentLoaded', () => {
 <script src="auth.js"></script>
 <script>
   checkAuth();
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    carregarTabela(); // Chama a função assim que a página carregar
+  });
 </script>
 </body>
 </html>
