@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>@ PROJETOS A3 | MELHORIA CONTÍNUA </title>
+    <title> LISTA MESTRA | EOP </title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -119,31 +119,6 @@
 			var isExpanded = false;
 			var collapseTimeout;
 		</script>
-		<!-- Banner -->
-		<section id="banner" style="position: relative; overflow: hidden;">
-			<!-- Fundo com blur -->
-			<div style="
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-image: url('images/projetosa3.jpg');
-			background-size: cover;
-			background-position: center;
-			filter: blur(5px) brightness(0.5); /* Desfoque e escurecimento */
-			z-index: -1;
-		">
-		</div>
-			<!-- Conteúdo -->
-			<div class="inner" style="position: relative; text-align: center; padding: 20px;">
-				<h2 style="color:#fff; margin: 0;">LISTA MESTRA | EXC. OPERACIONAL</h2>
-			</div>
-		</section>
-		<!-- Wrapper -->
-		<section id="wrapper">
-	</div>
-</section>
 			<!-- One -->
 			<section id="one" class="wrapper spotlight style1" style="padding: 20px 8em 0em 8em; position: relative; display: flex; flex-wrap: wrap; background-image: url('images/background-logo.jpg');
 			background-size: cover;
@@ -190,6 +165,15 @@
     }
     const arquivo = arquivoInput.files[0];
     try {
+		const tiposPermitidos = ["application/pdf", "application/msword", 
+	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	"application/vnd.ms-excel",
+	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
+	if (!tiposPermitidos.includes(arquivo.type)) {
+	statusMessage.style.color = "red";
+	statusMessage.textContent = "Tipo de arquivo inválido. Use PDF, Word ou Excel.";
+	return;
+	}
       statusMessage.style.color = "black";
       statusMessage.textContent = "Fazendo upload do arquivo...";
       // Referência ao Firebase Storage na pasta documentos
@@ -216,15 +200,7 @@
       statusMessage.textContent = "Erro ao adicionar documento. Veja o console.";
     }
   });
-	const tiposPermitidos = ["application/pdf", "application/msword", 
-	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-	"application/vnd.ms-excel",
-	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
-	if (!tiposPermitidos.includes(arquivo.type)) {
-	statusMessage.style.color = "red";
-	statusMessage.textContent = "Tipo de arquivo inválido. Use PDF, Word ou Excel.";
-	return;
-	}
+	
 // Função para carregar e popular a tabela, com botão de excluir
 async function carregarTabela() {
   const tbody = document.getElementById("projectsTableBody");
@@ -241,12 +217,15 @@ async function carregarTabela() {
 		<td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
 		<td>${data.data_criacao || ""}</td>
 		<td>
-			<button data-id="${docId}" class="btnEditar" style="background-color:#2980b9; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; margin-right: 5px;">
-			Editar
-			</button>
-			<button data-id="${docId}" class="btnExcluir" style="background-color:#c0392b; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
-			Excluir
-			</button>
+    <button data-id="${docId}" class="btnVisualizar" title="Visualizar" style="background: none; border: none; cursor: pointer;">
+      <i class="fas fa-eye" style="color: #27ae60; font-size: 1.4em;"></i>
+    </button>
+    <button data-id="${docId}" class="btnEditar" title="Editar" style="background: none; border: none; cursor: pointer;">
+      <i class="fas fa-edit" style="color: #2980b9; font-size: 1.4em;"></i>
+    </button>
+    <button data-id="${docId}" class="btnExcluir" title="Excluir" style="background: none; border: none; cursor: pointer;">
+      <i class="fas fa-trash-alt" style="color: #c0392b; font-size: 1.4em;"></i>
+    </button>
 		</td>
 		`;
       tbody.appendChild(tr);
@@ -302,6 +281,16 @@ async function carregarTabela() {
         }
       });
     });
+	// Adiciona listener para visualizar:
+const botoesVisualizar = document.querySelectorAll(".btnVisualizar");
+botoesVisualizar.forEach(botao => {
+  botao.addEventListener("click", (e) => {
+    const id = e.target.closest("button").getAttribute("data-id");
+    // Aqui você pode abrir uma modal, redirecionar ou mostrar detalhes do documento com esse id
+    alert("Visualizar documento com ID: " + id);
+  });
+});
+
   } catch (error) {
     console.error("Erro ao buscar documentos:", error);
     tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Erro ao carregar documentos</td></tr>`;
@@ -322,27 +311,6 @@ document.addEventListener("DOMContentLoaded", carregarTabela);
 </thead>
 						<tbody id="projectsTableBody" style="font-weight: bold; color: #666666; background-color: white; box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.4);">
 						<!-- Linhas da tabela aqui -->
-						</tbody>
-							<script>
-							const tbody = document.getElementById("projectsTableBody");
-							tbody.innerHTML = ""; // limpa tabela
-							db.collection("documentos").get().then(querySnapshot => {
-								querySnapshot.forEach(doc => {
-								const data = doc.data();
-								const tr = document.createElement("tr");
-								tr.innerHTML = `
-									<td>${data.titulo || ""}</td>
-									<td>${data.autor || ""}</td>
-									<td>${data.conteudo || ""}</td>
-									<td>${data.data_criacao || ""}</td>
-								`;
-								tbody.appendChild(tr);
-								});
-							}).catch(error => {
-								console.error("Erro ao buscar documentos:", error);
-								tbody.innerHTML = `<tr><td colspan="4" style="color:red; text-align:center;">Erro ao carregar documentos</td></tr>`;
-							});
-							</script>
 						</tbody>
 					</table>
 					<div id="paginacao" style="margin-top: 1em; text-align: center;"></div>
