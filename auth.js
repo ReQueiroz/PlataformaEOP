@@ -2,12 +2,13 @@
 
 // Configuração do Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyBlY1s_OQKLGFJaZSyDJzKIoX3WnFGSq58",
-  authDomain: "intranetcomfrio.firebaseapp.com",
-  projectId: "intranetcomfrio",
-  storageBucket: "intranetcomfrio.appspot.com",
-  messagingSenderId: "347790318348",
-  appId: "1:347790318348:web:901f10beadae6981e40729"
+  apiKey: "AIzaSyCkNzlHupGPk-gxHAL6TuQRP1bSBbnboog",
+  authDomain: "plataforma-eop.firebaseapp.com",
+  projectId: "plataforma-eop",
+  storageBucket: "plataforma-eop.firebasestorage.app",
+  messagingSenderId: "1043929089617",
+  appId: "1:1043929089617:web:f6dcc6300f0c9a47ba1a70",
+  measurementId: "G-SG5DDQWQV5"
 };
 
 // Inicializa o Firebase

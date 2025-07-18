@@ -3899,7 +3899,7 @@ body.is-menu-visible #menu .inner {
 	height: auto;
 	z-index: -1;
 	object-fit: cover;
-	filter: brightness(0.4) blur(5px); /* ⬅️ Aqui está o blur */
+	filter: brightness(0.7) blur(2px); /* ⬅️ Aqui está o blur */
 }
 
 

@@ -301,91 +301,20 @@
 
 		</script>
 
-		<style>
-			.search-input {
-				width: 0;
-				/* Largura inicialmente zero para estar completamente recolhido */
-				transition: width 0.3s ease;
-				/* Adicionando transição para suavizar a animação */
-				overflow: hidden;
-				/* Esconder qualquer conteúdo que possa estar fora do campo de entrada */
-				float: right;
-				/* Colocar o campo de entrada à direita */
-			}
-
-			.expanded {
-				width: calc(100% - 30px);
-				/* Largura expandida */
-			}
-
-			#searchIcon {
-				cursor: pointer;
-				/* Altera o cursor para ponteiro */
-			}
-
-			#sectorInfo {
-				position: relative;
-				/* Para que o h3 possa ser posicionado em relação a este contêiner */
-				display: inline-block;
-				/* Para que ele não ocupe toda a largura */
-			}
-
-			#sectorInfo h3 {
-				display: none;
-				/* Comece escondido */
-				position: absolute;
-				/* Posicionado absolutamente em relação ao contêiner pai */
-				width: calc(100% - 30px);
-				/* Ocupa toda a largura do contêiner, respeitando o ícone de pesquisa */
-				background-color: white;
-				/* Cor de fundo branca */
-				border-radius: 10px;
-				/* Cantos arredondados */
-				box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
-				/* Sombra */
-				color: black;
-				/* Cor do texto */
-				padding: 10px;
-				/* Espaçamento interno */
-				top: calc(100% + 5px);
-				/* Alinhado abaixo do contêiner pai com um pequeno espaço */
-				left: 0;
-				/* Alinhado à esquerda do contêiner pai */
-				z-index: 1;
-				/* Colocado acima de outros conteúdos */
-				margin-top: 0;
-				/* Adicionando margem superior zero */
-			}
-
-			#sectorInfo h3:hover {
-				background-color: #616163;
-				/* Altera a cor de fundo ao passar o mouse */
-			}
-
-			#sectorInfo:hover h3 {
-				display: block;
-			}
-
-			#sectorInfo:hover {
-				background-color: #616163;
-				/* Altera o background quando o mouse passa sobre o contêiner pai */
-				border-radius: 10px;
-			}
-		</style>
 
 <section id="one" class="wrapper spotlight style1" style="padding: 2.5em; padding-top: 5%; position: relative; display: flex; flex-direction: column; flex-wrap: wrap; background-size: cover; background-position: left center; background-repeat: no-repeat; background-image: url(images/fundo.png);">
 
 	<div style="width: 100%; text-align: left;">
-		<h3 style="color: #616163; margin: 0; margin-left: 10px; padding: 0;">NAVEGUE PELOS TEMAS</h2>
+		<h3 style="color: #fff; margin: 0; margin-left: 10px; padding: 0;">NAVEGUE PELOS TEMAS</h2>
 	</div>
 
 	<!-- Primeira linha com 2 cards -->
 	<div style="display: flex; flex-wrap: wrap; justify-content: flex-start;">
 		<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
-			<a href="Corporativo.html" class="image" style="margin: 2%;"><img src="images/a3.png"></a>
+			<a href="Lista Mestra.html" class="image" style="margin: 2%;"><img src="images/a3.png"></a>
 			<div class="content" align="center" style="padding: 5%;">
 				<h3 class="major-inicio" style="font-size: 0.8em;">LISTA MESTRA</h3>
-				<a href="Corporativo.html" class="special">ACESSAR</a>
+				<a href="Lista Mestra.html" class="special">ACESSAR</a>
 			</div>
 		</div>
 
@@ -398,9 +327,11 @@
 		</div>
 	</div>
   <!-- Linha horizontal de separação -->
-  <hr style="width: 100%; border: none; border-top: 2px solid #616163; margin: 0.5em 0;">
+  <hr style="width: 100%; border: none; border-top: 2px solid #fff; margin: 0.5em 0;">
 	<!-- Linha 1: 3 cards -->
-<div style="display: flex; flex-wrap: wrap; justify-content: flex-start;">
+	 		<h3 style="color: #fff; margin: 0; margin-left: 10px; padding: 0;">ACESSE OS DOCUMENTOS POR SETOR</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-start; padding: 0; margin-bottom: 0; padding-bottom: 0;">
+
 	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
 		<a href="Corporativo.html" class="image" style="margin: 2%;"><img src="images/inbound.png"></a>
 		<div class="content" align="center" style="padding: 5%;">
@@ -409,7 +340,7 @@
 		</div>
 	</div>
 
-	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
+	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; padding-bottom: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
 		<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/outbound.png"></a>
 		<div class="content" align="center" style="padding: 5%;">
 			<h3 class="major-inicio" style="font-size: 0.8em;">OUTBOUND</h3>
@@ -427,7 +358,8 @@
 </div>
 
 <!-- Linha 2: 2 cards -->
-<div style="display: flex; flex-wrap: wrap; justify-content: flex-start; padding: 0; padding-top: 0">
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-start; padding: 0; margin-top: 0; padding-top: 0;">
+
 	<div class="inner" style="width: 22%; margin: 1%; margin-right: 0; padding: 0; padding-top: 0; border-radius: 15px; box-shadow: 0 0 5px rgba(0, 0, 0, 1); background-color: white;">
 		<a href="Operações.html" class="image" style="margin: 2%;"><img src="images/local.png"></a>
 		<div class="content" align="center" style="padding: 5%;">
