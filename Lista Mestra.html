@@ -29,7 +29,7 @@
 				<h1><a href="homepage.html" class="image"><img src="images/LogoComfrio.png" style="width: 100px; height: auto;"></a></h1>
 			</div>
 			<div style="margin: 0 auto; padding-left: 7em;">
-				<h1 style="color: #616163; font-size: 900;">PROJETOS A3 | CORPORATIVO</h1>
+				<h1 style="color: #616163; font-size: 900;">LISTA MESTRA | EXC. OPERACIONAL</h1>
 			</div>
 			<nav style="display: flex; align-items: center;">
 				<div id="sectorContainer"
@@ -124,10 +124,10 @@
 			background-size: cover;
 			background-position: left center; /* ajustado para a direita e centralizado verticalmente */
 			background-repeat: no-repeat;">
-				<div class="table-wrapper" style="width: 100%; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+				<div class="table-wrapper" style="width: 100%; margin-top: 4%; color: white; display: flex; justify-content: center; align-items: left; flex-direction: column;">
 					<div>
 						<div>
-							<h2 style="color: #616163; margin: 0; padding: 0; align-self: center;">NAVEGUE PELOS PROJETOS ELABORADOS </h2>
+							<h3 style="color: #616163; margin: 0; padding: 0; align-self: center;">NAVEGUE PELOS DOCUMENTOS ARMAZENADOS </h2>
 						</div>
 					</div>
 					<style>
@@ -137,18 +137,88 @@
 							/* Define a cor de fundo para linhas pares */
 						}
 					</style>
-					<!-- Formulário para adicionar documento -->
-<section style="margin: 2em auto; width: 90%; max-width: 800px; background: #f9f9f9; padding: 1em; border-radius: 8px; box-shadow: 0 0 10px #ccc;">
+<!-- Botão para exibir o formulário -->
+<button id="mostrarFormularioBtn" style="margin: 1em 0; background-color: #27ae60; color: white; padding: 0.7em 1.2em; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+  <i class="fas fa-plus"></i> Adicionar Arquivo
+</button>
+<!-- Modal (formulário em popup) -->
+<div id="formularioModal" class="modal-formulario">
+  <style>
+    .modal-content-formulario input {
+      width: 100%;
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+      color: #333;
+      background-color: white;
+    }
+    /* Estilos do modal (caso ainda não tenha) */
+    .modal-formulario {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content-formulario {
+      background-color: #f9f9f9;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+	  margin-bottom: 0;
+    }
+    .fecharModal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #aaa;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .fecharModal:hover {
+      color: #000;
+    }
+  </style>
+<div class="modal-content-formulario">
+  <span class="fecharModal">&times;</span>
   <h3 style="color: #616163;">Adicionar Novo Documento</h3>
   <form id="formAdicionarDocumento">
-    <input type="text" id="tituloInput" placeholder="Título" required />
-    <input type="text" id="autorInput" placeholder="Autor" required />
+    <label for="tituloInput" style="color: #616163; margin: 0;">Título</label>
+    <input type="text" id="tituloInput" required />
+    <label for="autorInput" style="color: #616163; margin: 0;">Autor</label>
+    <input type="text" id="autorInput" required />
+    <label for="dataInput" style="color: #616163; margin: 0;">Data</label>
     <input type="date" id="dataInput" required />
+    <label for="arquivoInput" style="color: #616163; margin: 0;">Arquivo</label>
     <input type="file" id="arquivoInput" accept=".pdf,.doc,.docx,.xls,.xlsx" required />
-    <button type="submit">Adicionar Documento</button>
+<button type="submit" style="background-color: #27ae60; color: white; border: none; padding: 0.5em 1em; border-radius: 5px; cursor: pointer; font-weight: bold;">
+  Enviar
+</button>
   </form>
   <p id="statusMessage" style="color: green; font-weight: bold; margin-top: 0.5em;"></p>
-</section>
+</div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const mostrarBtn = document.getElementById("mostrarFormularioBtn");
+    const formContainer = document.getElementById("formularioContainer");
+
+    mostrarBtn.addEventListener("click", function () {
+      formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
+    });
+  });
+</script>
 <script>
   const form = document.getElementById("formAdicionarDocumento");
   const statusMessage = document.getElementById("statusMessage");
@@ -204,30 +274,30 @@
 // Função para carregar e popular a tabela, com botão de excluir
 async function carregarTabela() {
   const tbody = document.getElementById("projectsTableBody");
-  tbody.innerHTML = ""; // limpa tabela
+  tbody.innerHTML = "";
   try {
     const querySnapshot = await db.collection("documentos").get();
     querySnapshot.forEach(doc => {
       const data = doc.data();
       const docId = doc.id;
       const tr = document.createElement("tr");
-		tr.innerHTML = `
-		<td>${data.titulo || ""}</td>
-		<td>${data.autor || ""}</td>
-		<td>${data.conteudo ? `<a href="${data.conteudo}" target="_blank">Abrir arquivo</a>` : ''}</td>
-		<td>${data.data_criacao || ""}</td>
-		<td>
-    <button data-id="${docId}" class="btnVisualizar" title="Visualizar" style="background: none; border: none; cursor: pointer;">
+tr.innerHTML = `
+  <td>${data.titulo || ""}</td>
+  <td>${data.autor || ""}</td>
+  <td>${data.data_criacao || ""}</td>
+  <td>
+    ${data.conteudo ? `<a href="${data.conteudo}" target="_blank" title="Visualizar" style="background: none; border: none; cursor: pointer; text-decoration: none;">
       <i class="fas fa-eye" style="color: #27ae60; font-size: 1.4em;"></i>
-    </button>
+    </a>` : ''}
     <button data-id="${docId}" class="btnEditar" title="Editar" style="background: none; border: none; cursor: pointer;">
       <i class="fas fa-edit" style="color: #2980b9; font-size: 1.4em;"></i>
     </button>
     <button data-id="${docId}" class="btnExcluir" title="Excluir" style="background: none; border: none; cursor: pointer;">
       <i class="fas fa-trash-alt" style="color: #c0392b; font-size: 1.4em;"></i>
     </button>
-		</td>
-		`;
+  </td>
+`;
+
       tbody.appendChild(tr);
     });
 	const botoesEditar = document.querySelectorAll(".btnEditar");
@@ -299,14 +369,77 @@ botoesVisualizar.forEach(botao => {
 // Chama a função ao carregar a página
 document.addEventListener("DOMContentLoaded", carregarTabela);
 </script>
-<table id="default-table" style="background-color: white; text-align: center;">			
+<table id="default-table" style="background-color: white; text-align: center;">
+	<div class="filtros-container">
+							<div class="filtros-linha">
+								<div class="filtro">
+									<label for="yearFilter">Pilar</label>
+									<div class="select-wrapper">
+										<select id="yearFilter">
+											<option value="todos">Todos</option>
+											<option value="2024">BPO</option>
+											<option value="2025">APPCC</option>
+											<option value="2025">PPHO</option>
+											<option value="2025">PSO</option>
+											<option value="2025">OPE</option>
+											<option value="2025">FACILITIES</option>
+											<option value="2025">AMBIENTAL</option>
+										</select>
+									</div>
+								</div>
+								<div class="filtro">
+									<label for="categoryFilter">TIPO</label>
+									<div class="select-wrapper">
+										<select id="categoryFilter">
+											<option value="todos">Todos</option>
+											<option value="Quantitativo">MAN</option>
+											<option value="Qualitativo">PRO</option>
+											<option value="Qualitativo">FLU</option>
+											<option value="Qualitativo">POP</option>
+											<option value="Qualitativo">IT</option>
+											<option value="Qualitativo">LIS</option>
+											<option value="Qualitativo">CKL</option>
+										</select>
+									</div>
+								</div>
+								<div class="filtro">
+									<label for="unitFilter">ÁREA</label>
+									<div class="select-wrapper">
+										<select id="unitFilter">
+											<option value="todas">Todas</option>
+											<option value="Jarinu">EOP</option>
+											<option value="Jarinu">OP</option>
+											<option value="Jarinu">INB</option>
+											<option value="Jarinu">OUT</option>
+										</select>
+									</div>
+								</div>
+								<div class="filtro">
+									<label for="segmentFilter">UNIDADE</label>
+									<div class="select-wrapper">
+										<select id="segmentFilter">
+											<option value="todos">Todos</option>
+											<option value="FMCG">GRU I</option>
+										</select>
+									</div>
+								</div>
+								<div class="filtro">
+									<label for="typeFilter">Tipo</label>
+									<div class="select-wrapper">
+										<select id="typeFilter">
+											<option value="todos">Todos</option>
+											<option value="Operacional">Operacional</option>
+											<option value="Dashboard">Dashboard</option>
+										</select>
+									</div>
+								</div>			
 <thead style="background-color: #2e3141; box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);">
   <tr>
-    <th style="text-align: center; padding-top: 1em;">Título</th>
-    <th style="text-align: center;">Autor</th>
-    <th style="text-align: center;">Conteúdo</th>
-    <th style="text-align: center;">Data</th>
-    <th style="text-align: center;">Ações</th> <!-- nova coluna -->
+    <th style="text-align: center; padding-top: 1em;">Pilar</th>
+    <th style="text-align: center;">Tipo</th>
+    <th style="text-align: center;">Área</th>
+    <th style="text-align: center;">Unidade</th>
+	<th style="text-align: center;">Unidade</th>
   </tr>
 </thead>
 						<tbody id="projectsTableBody" style="font-weight: bold; color: #666666; background-color: white; box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.4);">
@@ -529,5 +662,28 @@ window.addEventListener('DOMContentLoaded', () => {
     carregarTabela(); // Chama a função assim que a página carregar
   });
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const botao = document.getElementById("mostrarFormularioBtn");
+    const modal = document.getElementById("formularioModal");
+    const fechar = document.querySelector(".fecharModal");
+
+    botao.addEventListener("click", () => {
+      modal.style.display = "flex";
+    });
+
+    fechar.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    // Fecha ao clicar fora do conteúdo
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
